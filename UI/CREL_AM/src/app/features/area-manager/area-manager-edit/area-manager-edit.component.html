@@ -1,0 +1,233 @@
+<p-dialog
+  [(visible)]="isShowDialog"
+  [style]="{ width: '80vw' }"
+  header="Cập nhật hồ sơ người quản lý khu vực"
+  [modal]="true"
+  styleClass="p-fluid"
+  (onHide)="hideDialog()"
+  [draggable]="false"
+>
+  <div class="card">
+    <div class="card-header"><h4 class="title"></h4></div>
+    <div class="card-body p-fluid">
+      <div class="grid" *ngIf="isShowSkeleton">
+        <div class="sm:col-5">
+          <div class="flex justify-content-center">
+            <p-skeleton shape="circle" size="5rem"></p-skeleton>
+          </div>
+        </div>
+        <div class="sm:col-7">
+          <div class="grid">
+            <div class="sm:col-12 md:col-6">
+              <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+            </div>
+            <div class="sm:col-12 md:col-6">
+              <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+            </div>
+            <div class="sm:col-12 md:col-6">
+              <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+            </div>
+            <div class="sm:col-12 md:col-6">
+              <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+            </div>
+            <div class="sm:col-12 md:col-6">
+              <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+            </div>
+            <div class="sm:col-12 md:col-6">
+              <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+            </div>
+            <div class="sm:col-12">
+              <p-skeleton height="4rem" styleClass="mb-2"></p-skeleton>
+            </div>
+            <div class="sm:col-12 md:col-6">
+              <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+            </div>
+            <div class="sm:col-12">
+              <p-skeleton height="4rem" styleClass="mb-2"></p-skeleton>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <form
+        novalidate
+        (ngSubmit)="updateAreaManager()"
+        [formGroup]="areaManagerForm"
+      >
+        <div class="grid" *ngIf="!isShowSkeleton">
+          <div class="sm:col-4">
+            <div class="flex justify-content-center">
+              <app-picture-upload
+                [imgSrc]="areaManager.avatarLink"
+                (outputImg)="getImgFromChild($event)"
+                [avatar]="true"
+              ></app-picture-upload>
+            </div>
+          </div>
+          <div class="sm:col-8">
+            <div class="grid">
+              <div class="form-group sm:col-12 md:col-6">
+                <label for="userName"
+                  >Tài khoản <span class="required">*</span></label
+                >
+                <input
+                  type="text"
+                  pInputText
+                  id="userName"
+                  (keydown.space)="$event.preventDefault()"
+                  [(ngModel)]="areaManager.userName"
+                  placeholder="Nhập tài khoản"
+                  appInputRestriction
+                  formControlName="userName"
+                  [class]="displayMessage.userName ? 'ng-dirty ng-invalid' : ''"
+                />
+                <p-message
+                  severity="error"
+                  *ngIf="displayMessage.userName"
+                  text="{{ displayMessage.userName }}"
+                ></p-message>
+              </div>
+              <div class="form-group sm:col-12 md:col-6">
+                <label for="email"
+                  >Địa chỉ Email <span class="required">*</span></label
+                >
+                <input
+                  (change)="onChangeEmail()"
+                  type="text"
+                  pInputText
+                  id="email"
+                  [(ngModel)]="areaManager.email"
+                  appInputRestriction
+                  formControlName="email"
+                  placeholder="Nhập địa chỉ email"
+                  [class]="displayMessage.email ? 'ng-dirty ng-invalid' : ''"
+                />
+                <p-message
+                  severity="error"
+                  *ngIf="displayMessage.email"
+                  text="{{ displayMessage.email }}"
+                ></p-message>
+              </div>
+              <div class="form-group sm:col-12 md:col-6">
+                <label for="phoneNumber"
+                  >Số điện thoại <span class="required">*</span></label
+                >
+                <p-inputMask
+                  (change)="onChangePhone()"
+                  id="phoneNumber"
+                  [(ngModel)]="areaManager.phoneNumber"
+                  pKeyFilter="int"
+                  appInputRestriction
+                  formControlName="phoneNumber"
+                  (onComplete)="changeInputPhoneStyle()"
+                  [class]="
+                    displayMessage.phoneNumber ? 'ng-dirty ng-invalid' : ''
+                  "
+                  placeholder="Nhập số điện thoại"
+                  mask="9999 999 999"
+                ></p-inputMask>
+                <p-message
+                  severity="error"
+                  *ngIf="displayMessage.phoneNumber"
+                  text="{{ displayMessage.phoneNumber }}"
+                ></p-message>
+              </div>
+              <div class="form-group sm:col-12 md:col-6">
+                <label for="name"
+                  >Họ và tên <span class="required">*</span></label
+                >
+                <input
+                  type="text"
+                  pInputText
+                  id="name"
+                  [(ngModel)]="areaManager.name"
+                  appInputRestriction
+                  formControlName="name"
+                  placeholder="Nhập họ và tên"
+                  [class]="displayMessage.name ? 'ng-dirty ng-invalid' : ''"
+                />
+                <p-message
+                  severity="error"
+                  *ngIf="displayMessage.name"
+                  text="{{ displayMessage.name }}"
+                ></p-message>
+              </div>
+              <div class="form-group sm:col-12 md:col-6">
+                <label for="birthday"
+                  >Ngày sinh <span class="required">*</span></label
+                >
+                <p-calendar
+                  inputId="birthday"
+                  [(ngModel)]="areaManager.birthday"
+                  [showIcon]="true"
+                  appendTo="body"
+                  [firstDayOfWeek]="1"
+                  dateFormat="dd-mm-yy"
+                  [readonlyInput]="true"
+                  appInputRestriction
+                  formControlName="birthday"
+                  [minDate]="minDate"
+                  [maxDate]="maxDate"
+                  (onSelect)="onSelect($event)"
+                ></p-calendar>
+                <p-message
+                  severity="error"
+                  *ngIf="displayMessage.birthday"
+                  text="{{ displayMessage.birthday }}"
+                ></p-message>
+              </div>
+              <div class="form-group sm:col-12 md:col-6">
+                <label for="gender"
+                  >Giới tính <span class="required">*</span></label
+                >
+                <p-dropdown
+                  emptyMessage="Danh sách trống"
+                  id="industry"
+                  [options]="genders"
+                  [(ngModel)]="selectedGender"
+                  [baseZIndex]="1101"
+                  [showClear]="true"
+                  optionLabel="gender"
+                  appendTo="body"
+                  placeholder="Chọn giới tính"
+                  appInputRestriction
+                  formControlName="gender"
+                  [class]="displayMessage.gender ? 'ng-dirty ng-invalid' : ''"
+                ></p-dropdown>
+                <p-message
+                  severity="error"
+                  *ngIf="displayMessage.gender"
+                  text="{{ displayMessage.gender }}"
+                ></p-message>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <ng-template pTemplate="footer">
+    <p-button
+      label="Huỷ bỏ"
+      icon="pi pi-times"
+      (onClick)="cancelDialog()"
+      styleClass="p-button-secondary"
+      class="mr-2"
+      [pTooltip]="'Huỷ bỏ nhập dữ liệu'"
+    ></p-button>
+    <p-button
+      label="Cập nhật"
+      icon="pi pi-check"
+      type="submit"
+      [loading]="loading"
+      [disabled]="!areaManagerForm.valid"
+      (onClick)="updateAreaManager()"
+      class="custom-button"
+      [pTooltip]="
+        areaManagerForm.valid
+          ? 'Cập nhật dữ liệu bạn đã nhập'
+          : 'Chỉ có thể cập nhật khi biểu mẫu không có lỗi'
+      "
+    ></p-button>
+  </ng-template>
+</p-dialog>

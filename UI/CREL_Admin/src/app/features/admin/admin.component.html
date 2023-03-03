@@ -1,0 +1,147 @@
+<div class="content">
+  <div class="grid">
+    <div class="sm:col-12 px-3">
+      <div class="card custom-card title p-3">
+        <p>THÔNG TIN NGƯỜI QUẢN TRỊ</p>
+      </div>
+    </div>
+  </div>
+  <div class="grid" *ngIf="isShowSkeleton">
+    <div class="sm:col-5">
+      <div class="flex justify-content-center">
+        <p-skeleton shape="circle" size="5rem"></p-skeleton>
+      </div>
+    </div>
+    <div class="sm:col-7">
+      <div class="grid">
+        <div class="sm:col-12 md:col-6">
+          <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+        </div>
+        <div class="sm:col-12 md:col-6">
+          <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+        </div>
+        <div class="sm:col-12 md:col-6">
+          <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+        </div>
+        <div class="sm:col-12 md:col-6">
+          <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+        </div>
+        <div class="sm:col-12 md:col-6">
+          <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+        </div>
+        <div class="sm:col-12 md:col-6">
+          <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+        </div>
+        <div class="sm:col-12">
+          <p-skeleton height="4rem" styleClass="mb-2"></p-skeleton>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="grid" *ngIf="!isShowSkeleton">
+    <div class="container-fluid pb-5 px-5">
+      <div class="row">
+        <div class="col-lg-4 pl-0">
+          <div class="card custom-card mb-4">
+            <div class="card-body text-center">
+              <img
+                [src]="admin ? admin.avatarLink : AVATAR_DEFAULT"
+                alt="avatar"
+                class="rounded-circle img-fluid"
+                style="width: 150px"
+              />
+              <h5 class="my-2">Người quản trị</h5>
+              <p class="text-muted mb-4">{{ admin.name }}</p>
+              <hr />
+              <div class="d-flex justify-content-center mb-2">
+                <button
+                  type="button"
+                  class="btn btn-primary mr-2 custom-button"
+                  (click)="editProfile()"
+                >
+                  Chỉnh sửa
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-primary custom-button"
+                  (click)="changePassword()"
+                >
+                  Đổi mật khẩu
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-8 pr-0">
+          <div class="card custom-card mb-4">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Tài khoản</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">{{ admin.userName }}</p>
+                </div>
+              </div>
+              <hr />
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Họ và tên</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">{{ admin.name }}</p>
+                </div>
+              </div>
+              <hr />
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Địa chỉ email</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">{{ admin.email }}</p>
+                </div>
+              </div>
+              <hr />
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Số điện thoại</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">
+                    {{ admin.phoneNumber | slice: 0:4 }}
+                    {{ admin.phoneNumber | slice: 4:7 }}
+                    {{ admin.phoneNumber | slice: 7:10 }}
+                  </p>
+                </div>
+              </div>
+              <hr />
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Giới tính</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">
+                    {{ areaManager.gender ? "Nam" : "Nữ" }}
+                  </p>
+                </div>
+              </div>
+              <hr />
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Ngày sinh</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">
+                    {{ admin.birthday | date: DATE_FORMAT }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<router-outlet></router-outlet>

@@ -1,0 +1,104 @@
+<p-dialog
+  [(visible)]="isShowDialog"
+  [style]="{ width: '80%', height: '85%' }"
+  header="Lựa chọn thương hiệu để đề xuất bất động sản thương mại đã chọn"
+  [modal]="true"
+  styleClass="p-fluid"
+  (onHide)="hideDialog()"
+  [dismissableMask]="true"
+  [closable]="true"
+  [draggable]="false"
+  [autoZIndex]="false"
+>
+  <ng-template pTemplate="content">
+    <div class="grid grid-nogutter mb-5">
+      <div class="col-sm-10 ml-8">
+        <dx-drop-down-box
+          [(value)]="brandGridBoxValue"
+          [(opened)]="isBrandGridBoxOpened"
+          valueExpr="id"
+          [deferRendering]="false"
+          [displayExpr]="brandGridBox_displayExpr"
+          placeholder="Tìm kiếm thương hiệu..."
+          [showClearButton]="true"
+          [dataSource]="brandGridDataSource"
+          (onOptionChanged)="onBrandGridBoxOptionChanged($event)"
+        >
+          <div *dxTemplate="let data of 'content'">
+            <dx-data-grid
+              [dataSource]="brandGridDataSource"
+              [columns]="brandGridColumns"
+              [hoverStateEnabled]="true"
+              [(selectedRowKeys)]="brandGridBoxValue"
+              height="100%"
+            >
+              <dxo-selection mode="single"></dxo-selection>
+              <dxo-filter-row [visible]="true"></dxo-filter-row>
+              <dxo-scrolling mode="virtual"></dxo-scrolling>
+              <dxo-paging [enabled]="true" [pageSize]="10"></dxo-paging>
+            </dx-data-grid>
+          </div>
+        </dx-drop-down-box>
+      </div>
+    </div>
+    <div class="grid">
+      <p-pickList
+        [source]="brands"
+        [target]="selectedBrands"
+        sourceHeader="Danh sách thương hiệu có thể đề xuất"
+        targetHeader="Danh sách thương hiệu được chọn để đề xuất"
+        [dragdrop]="true"
+        [responsive]="true"
+        [sourceStyle]="{ height: '100%', width: '100%' }"
+        [targetStyle]="{ height: '100%', width: '100%' }"
+        [style]="{ height: '43vh', width: '75vw' }"
+        styleClass="custom-picklist"
+      >
+        <ng-template let-brand pTemplate="item" *ngIf="!isShowSkeleton">
+          <p-skeleton width="100%" styleClass="mb-2"></p-skeleton>
+          <p-skeleton width="100%" styleClass="mb-4"></p-skeleton>
+        </ng-template>
+        <ng-template let-brand pTemplate="item" *ngIf="isShowSkeleton">
+          <div class="brand-item" [id]="brand.id">
+            <div class="image-container">
+              <img
+                [src]="brand.avatarLink ? brand.avatarLink : AVATAR_DEFAULT"
+                [alt]="brand.name"
+                class="brand-image"
+                referrerpolicy="no-referrer"
+              />
+            </div>
+            <div class="brand-list-detail">
+              <h5 class="mb-2">{{ brand.name }}</h5>
+              <i class="pi pi-tag brand-category-icon"></i>
+              <span class="brand-category">{{ brand.industryName }}</span>
+            </div>
+            <div class="product-list-action">
+              <button
+                class="btn btn-primary btn-round btn-icon animation-on-hover mr-2"
+                (click)="openDetailBrand(brand)"
+                pTooltip="Xem chi tiết"
+              >
+                <i class="pi pi-eye"> </i>
+              </button>
+            </div>
+          </div>
+        </ng-template>
+      </p-pickList>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      label="Đề xuất"
+      icon="pi pi-chevron-circle-right"
+      type="submit"
+      [loading]="loading"
+      [disabled]="selectedBrands.length===0"
+      (onClick)="suggestBrand()"
+      class="custom-button"
+      [pTooltip]="'Đề xuất cho những thương hiệu được chọn'"
+    ></p-button>
+  </ng-template>
+</p-dialog>
+<router-outlet></router-outlet>

@@ -1,0 +1,747 @@
+<div id="map" hidden></div>
+<p-dialog
+  [(visible)]="isShowDialog"
+  [style]="{ width: '80vw' }"
+  header="Tạo mới thông tin bất động sản thương mại"
+  [modal]="true"
+  styleClass="p-fluid"
+  (onHide)="hideDialog()"
+  [baseZIndex]="1100"
+  [closable]="false"
+  [draggable]="false"
+>
+  <ng-template pTemplate="content">
+    <div class="grid" *ngIf="isShowSkeleton">
+      <div class="sm:col-5">
+        <div class="flex justify-content-center">
+          <p-skeleton shape="circle" size="4rem" styleClass="mr-2"></p-skeleton>
+          <div style="flex: 1">
+            <p-skeleton width="100%" styleClass="mb-2"></p-skeleton>
+            <p-skeleton width="75%"></p-skeleton>
+          </div>
+        </div>
+        <div class="flex justify-content-center">
+          <p-skeleton shape="circle" size="4rem" styleClass="mr-2"></p-skeleton>
+          <div style="flex: 1">
+            <p-skeleton width="100%" styleClass="mb-2"></p-skeleton>
+            <p-skeleton width="75%"></p-skeleton>
+          </div>
+        </div>
+        <div class="flex justify-content-center">
+          <p-skeleton shape="circle" size="4rem" styleClass="mr-2"></p-skeleton>
+          <div style="flex: 1">
+            <p-skeleton width="100%" styleClass="mb-2"></p-skeleton>
+            <p-skeleton width="75%"></p-skeleton>
+          </div>
+        </div>
+        <div class="flex justify-content-center">
+          <p-skeleton shape="circle" size="4rem" styleClass="mr-2"></p-skeleton>
+          <div style="flex: 1">
+            <p-skeleton width="100%" styleClass="mb-2"></p-skeleton>
+            <p-skeleton width="75%"></p-skeleton>
+          </div>
+        </div>
+        <div class="flex justify-content-center">
+          <p-skeleton shape="circle" size="4rem" styleClass="mr-2"></p-skeleton>
+          <div style="flex: 1">
+            <p-skeleton width="100%" styleClass="mb-2"></p-skeleton>
+            <p-skeleton width="75%"></p-skeleton>
+          </div>
+        </div>
+        <div class="flex justify-content-center">
+          <p-skeleton shape="circle" size="4rem" styleClass="mr-2"></p-skeleton>
+          <div style="flex: 1">
+            <p-skeleton width="100%" styleClass="mb-2"></p-skeleton>
+            <p-skeleton width="75%"></p-skeleton>
+          </div>
+        </div>
+      </div>
+      <div class="sm:col-7">
+        <div class="grid">
+          <div class="sm:col-12 md:col-6">
+            <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+          </div>
+          <div class="sm:col-12 md:col-6">
+            <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+          </div>
+          <div class="sm:col-12 md:col-6">
+            <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+          </div>
+          <div class="sm:col-12 md:col-6">
+            <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+          </div>
+          <div class="sm:col-12 md:col-6">
+            <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+          </div>
+          <div class="sm:col-12 md:col-6">
+            <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+          </div>
+          <div class="sm:col-12">
+            <p-skeleton height="4rem" styleClass="mb-2"></p-skeleton>
+          </div>
+          <div class="sm:col-12">
+            <p-skeleton height="4rem" styleClass="mb-2"></p-skeleton>
+          </div>
+          <div class="sm:col-12">
+            <p-skeleton height="4rem" styleClass="mb-2"></p-skeleton>
+          </div>
+          <div class="sm:col-12">
+            <p-skeleton height="4rem" styleClass="mb-2"></p-skeleton>
+          </div>
+          <div class="sm:col-12">
+            <p-skeleton height="4rem" styleClass="mb-2"></p-skeleton>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="grid" *ngIf="!isShowSkeleton">
+      <div class="sm:col-5">
+        <label class="ml-2">Thêm ảnh bất động sản thương mại</label>
+        <div class="flex justify-content-center">
+          <app-picture-upload
+            [imgSrcArray]="images"
+            (outputImgArray)="getImgArrayFromChild($event)"
+            [avatar]="false"
+          ></app-picture-upload>
+        </div>
+      </div>
+      <div class="sm:col-7">
+        <form novalidate (ngSubmit)="saveProperty()" [formGroup]="propertyForm">
+          <p-fieldset [toggleable]="true" legend="Thông tin chính">
+            <div class="grid">
+              <div class="sm:col-12">
+                <div class="grid" id="location">
+                  <div class="col-sm-9 flex align-items-center">
+                    <label class="mb-0"for="location"
+                      >Địa chỉ <span class="required">*</span>
+                    </label>
+                  </div>
+                  <div class="sm:col-3">
+                    <p-button
+                      label="Tìm nhanh"
+                      (click)="changeAutocompleteStatus()"
+                      styleClass="p-button-link custom-link"
+                    ></p-button>
+                  </div>
+                  <div class="sm:col-12 md:col-6">
+                    <p-dropdown
+                      emptyMessage="Danh sách trống"
+                      [options]="districts"
+                      [(ngModel)]="selectedDistrict"
+                      [baseZIndex]="1101"
+                      [filter]="true"
+                      filterBy="name"
+                      (onChange)="resetLocation($event)"
+                      [showClear]="false"
+                      optionLabel="name"
+                      placeholder="Chọn Quận/Huyện"
+                      appInputRestriction
+                      formControlName="district"
+                      [class]="
+                        displayMessage.district ? 'ng-dirty ng-invalid' : ''
+                      "
+                    ></p-dropdown>
+                    <p-message
+                      severity="error"
+                      *ngIf="displayMessage.district"
+                      text="{{ displayMessage.district }}"
+                    ></p-message>
+                  </div>
+                  <div class="sm:col-12 md:col-6">
+                    <p-dropdown
+                      emptyMessage="Danh sách trống"
+                      [options]="wards"
+                      [(ngModel)]="selectedWard"
+                      [baseZIndex]="1101"
+                      [filter]="true"
+                      filterBy="name"
+                      [showClear]="false"
+                      optionLabel="name"
+                      (onChange)="onChangeWard($event)"
+                      (click)="loadWards($event)"
+                      placeholder="Chọn Phường"
+                      appInputRestriction
+                      formControlName="ward"
+                      [class]="displayMessage.ward ? 'ng-dirty ng-invalid' : ''"
+                    ></p-dropdown>
+                    <p-message
+                      severity="error"
+                      *ngIf="displayMessage.ward"
+                      text="{{ displayMessage.ward }}"
+                    ></p-message>
+                  </div>
+                  <div class="sm:col-12 md:col-6">
+                    <p-dropdown
+                      emptyMessage="Danh sách trống"
+                      [options]="streets"
+                      [(ngModel)]="selectedStreet"
+                      [baseZIndex]="1101"
+                      [filter]="true"
+                      filterBy="name"
+                      [showClear]="false"
+                      optionLabel="name"
+                      (click)="loadStreets($event)"
+                      placeholder="Chọn Đường"
+                      appInputRestriction
+                      formControlName="streetSegment"
+                      [class]="
+                        displayMessage.streetSegment
+                          ? 'ng-dirty ng-invalid'
+                          : ''
+                      "
+                    ></p-dropdown>
+                    <p-message
+                      severity="error"
+                      *ngIf="displayMessage.streetSegment"
+                      text="{{ displayMessage.streetSegment }}"
+                    ></p-message>
+                  </div>
+                  <div class="sm:col-12 md:col-6">
+                    <input
+                      type="text"
+                      pInputText
+                      id="name"
+                      (keyup)="onKeyAddress($event)"
+                      [(ngModel)]="detailLocation"
+                      placeholder="Nhập địa chỉ chi tiết (số nhà, toà nhà,...)"
+                      appInputRestriction
+                      formControlName="address"
+                      [class]="
+                        displayMessage.address ? 'ng-dirty ng-invalid' : ''
+                      "
+                    />
+                    <p-message
+                      severity="error"
+                      *ngIf="displayMessage.address"
+                      text="{{ displayMessage.address }}"
+                    ></p-message>
+                  </div>
+                </div>
+              </div>
+
+              <div class="sm:col-12 md:col-6">
+                <label for="owner"
+                  >Thông tin người sở hữu <span class="required">*</span></label
+                >
+                <div class="p-inputgroup">
+                  <dx-drop-down-box
+                    [(value)]="ownerGridBoxValue"
+                    [(opened)]="isOwnerGridBoxOpened"
+                    valueExpr="id"
+                    [deferRendering]="false"
+                    [displayExpr]="ownerGridBox_displayExpr"
+                    placeholder="Chọn người sở hữu"
+                    [showClearButton]="true"
+                    [dataSource]="ownerGridDataSource"
+                    (onOptionChanged)="onOwnerGridBoxOptionChanged($event)"
+                    appInputRestriction
+                    formControlName="owner"
+                    [class]="
+                      displayMessage.owner
+                        ? 'ng-dirty ng-invalid custom-dx-drop-down'
+                        : 'custom-dx-drop-down'
+                    "
+                  >
+                    <div *dxTemplate="let data of 'content'">
+                      <dx-data-grid
+                        [dataSource]="ownerGridDataSource"
+                        [columns]="ownerGridColumns"
+                        [selection]="{ mode: 'multiple' }"
+                        [hoverStateEnabled]="true"
+                        [paging]="{ enabled: true, pageSize: 30 }"
+                        [filterRow]="{ visible: true }"
+                        [scrolling]="{ mode: 'virtual' }"
+                        [(selectedRowKeys)]="ownerGridBoxValue"
+                      >
+                      </dx-data-grid>
+                    </div>
+                  </dx-drop-down-box>
+                  <button
+                    type="button"
+                    pButton
+                    pRipple
+                    pTooltip="Tạo mới"
+                    icon="pi pi-plus"
+                    (click)="openNewOwnerModal()"
+                  ></button>
+                </div>
+                <p-message
+                  severity="error"
+                  *ngIf="displayMessage.owner"
+                  text="{{ displayMessage.owner }}"
+                ></p-message>
+              </div>
+              <div class="sm:col-12 md:col-6">
+                <label for="broker"
+                  >Nhân viên môi giới cập nhật
+                  <span class="required">*</span></label
+                >
+                <div class="p-inputgroup">
+                  <dx-drop-down-box
+                    [(value)]="brokerGridBoxValue"
+                    [(opened)]="isBrokerGridBoxOpened"
+                    valueExpr="id"
+                    [deferRendering]="false"
+                    [displayExpr]="brokerGridBox_displayExpr"
+                    placeholder="Chọn nhân viên môi giới"
+                    [showClearButton]="true"
+                    [dataSource]="brokerGridDataSource"
+                    (onOptionChanged)="onBrokerGridBoxOptionChanged($event)"
+                    appInputRestriction
+                    formControlName="broker"
+                    [class]="
+                      displayMessage.broker
+                        ? 'ng-dirty ng-invalid custom-dx-drop-down'
+                        : 'custom-dx-drop-down'
+                    "
+                  >
+                    <div *dxTemplate="let data of 'content'">
+                      <dx-data-grid
+                        [dataSource]="brokerGridDataSource"
+                        [columns]="brokerGridColumns"
+                        [hoverStateEnabled]="true"
+                        [(selectedRowKeys)]="brokerGridBoxValue"
+                        height="100%"
+                      >
+                        <dxo-selection mode="single"></dxo-selection>
+                        <dxo-filter-row [visible]="true"></dxo-filter-row>
+                        <dxo-scrolling mode="virtual"></dxo-scrolling>
+                        <dxo-paging
+                          [enabled]="true"
+                          [pageSize]="10"
+                        ></dxo-paging>
+                      </dx-data-grid>
+                    </div>
+                  </dx-drop-down-box>
+                  <button
+                    type="button"
+                    pButton
+                    pRipple
+                    pTooltip="Tạo mới"
+                    icon="pi pi-plus"
+                    (click)="openNewBrokerModal()"
+                  ></button>
+                </div>
+                <p-message
+                  severity="error"
+                  *ngIf="displayMessage.broker"
+                  text="{{ displayMessage.broker }}"
+                ></p-message>
+              </div>
+              <div class="form-group sm:col-12">
+                <label for="status"
+                  >Tình trạng giấy tờ <span class="required">*</span></label
+                >
+                <p-dropdown
+                  emptyMessage="Danh sách trống"
+                  [ngModel]="selectedCertificate"
+                  [options]="certificates"
+                  placeholder="Chọn tình trạng giấy tờ"
+                  [showClear]="false"
+                  [baseZIndex]="1101"
+                  optionLabel="label"
+                  (onChange)="changeCertificates($event)"
+                  formControlName="certificates"
+                  [class]="
+                    displayMessage.certificates ? 'ng-dirty ng-invalid' : ''
+                  "
+                  [scrollHeight]="240"
+                >
+                </p-dropdown>
+              </div>
+              <div class="col-12">
+                <ng-container
+                  *ngIf="selectedCertificate && selectedCertificate.value !== 0"
+                >
+                  <label class="ml-2">Thêm ảnh giấy tờ</label>
+                  <div class="flex justify-content-center">
+                    <app-picture-upload
+                      [imgSrcArray]="certificateImages"
+                      (outputCertificatesImgArray)="
+                        getCertificatesImgArrayFromChild($event)
+                      "
+                      (outputOldCertificatesImgArray)="
+                        getOldCertificatesImgArrayFromChild($event)
+                      "
+                      [avatar]="false"
+                      [certificates]="true"
+                    ></app-picture-upload>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </p-fieldset>
+          <br />
+          <p-fieldset
+            [toggleable]="true"
+            [collapsed]="true"
+            legend="Thông tin chi tiết"
+          >
+            <div class="grid">
+              <div class="sm:col-12 md:col-6">
+                <label for="name">Tiêu đề</label>
+                <input
+                  type="text"
+                  pInputText
+                  id="name"
+                  placeholder="Nhập tiêu đề"
+                  [(ngModel)]="property.name"
+                  appInputRestriction
+                  formControlName="name"
+                  [class]="displayMessage.name ? 'ng-dirty ng-invalid' : ''"
+                />
+                <p-message
+                  severity="error"
+                  *ngIf="displayMessage.name"
+                  text="{{ displayMessage.name }}"
+                ></p-message>
+              </div>
+              <div class="sm:col-12 md:col-6">
+                <label for="price">Giá</label>
+                <p-inputNumber
+                  [min]="0"
+                  [max]="10000"
+                  [(ngModel)]="property.price"
+                  suffix=" triệu/tháng"
+                  inputId="price"
+                  locale="vi-VN"
+                  placeholder="Nhập giá cho thuê"
+                  [minFractionDigits]="1"
+                  appInputRestriction
+                  formControlName="price"
+                  [class]="displayMessage.price ? 'ng-dirty ng-invalid' : ''"
+                ></p-inputNumber>
+                <p-message
+                  severity="error"
+                  *ngIf="displayMessage.price"
+                  text="{{ displayMessage.price }}"
+                ></p-message>
+              </div>
+              <div class="sm:col-12 mt-4">
+                <div class="grid">
+                  <div class="sm:col-3">
+                    <div class="field-checkbox align-items-center">
+                      <p-inputSwitch
+                        inputId="check"
+                        [(ngModel)]="isHasProject"
+                        appInputRestriction
+                        formControlName="checkProject"
+                        (onChange)="onChangeStateProject($event)"
+                      ></p-inputSwitch>
+                      <label for="check">Có dự án</label>
+                    </div>
+                  </div>
+                  <div class="sm:col-9">
+                    <div class="p-inputgroup">
+                      <p-dropdown
+                        emptyMessage="Danh sách trống"
+                        id="project"
+                        [options]="projects"
+                        [(ngModel)]="property.project"
+                        [baseZIndex]="1101"
+                        [filter]="true"
+                        filterBy="name"
+                        appendTo="body"
+                        [showClear]="false"
+                        optionLabel="name"
+                        placeholder="Chọn dự án"
+                        appInputRestriction
+                        formControlName="project"
+                      ></p-dropdown>
+                      <button
+                        type="button"
+                        pButton
+                        pRipple
+                        [disabled]="!isHasProject"
+                        pTooltip="Tạo mới"
+                        icon="pi pi-plus"
+                        (click)="openNewProjectModal()"
+                      ></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="sm:col-12">
+                <label for="rentalConditionOptions">Điều kiện thuê</label>
+                <textarea
+                  rows="1"
+                  pInputTextarea
+                  [autoResize]="true"
+                  id="rentalConditionOptions"
+                  [(ngModel)]="property.rentalCondition"
+                  appInputRestriction
+                  formControlName="rentalCondition"
+                  [class]="
+                    displayMessage.rentalCondition ? 'ng-dirty ng-invalid' : ''
+                  "
+                ></textarea>
+              </div>
+              <div class="sm:col-12 md:col-6">
+                <label for="rentalTerm">Thời hạn thuê</label>
+                <p-dropdown
+                  emptyMessage="Danh sách trống"
+                  id="rentalTerm"
+                  [options]="rentalTermOptions"
+                  [(ngModel)]="property.rentalTerm"
+                  [baseZIndex]="1101"
+                  [editable]="true"
+                  appendTo="body"
+                  appInputRestriction
+                  formControlName="rentalTerm"
+                  [class]="
+                    displayMessage.rentalTerm ? 'ng-dirty ng-invalid' : ''
+                  "
+                ></p-dropdown>
+              </div>
+              <div class="sm:col-12 md:col-6">
+                <label for="depositTerm">Thời hạn đặt cọc</label>
+                <p-dropdown
+                  emptyMessage="Danh sách trống"
+                  id="depositTerm"
+                  [options]="depositTermOptions"
+                  [(ngModel)]="property.depositTerm"
+                  [baseZIndex]="1101"
+                  [editable]="true"
+                  appendTo="body"
+                  appInputRestriction
+                  formControlName="depositTerm"
+                  [class]="
+                    displayMessage.depositTerm ? 'ng-dirty ng-invalid' : ''
+                  "
+                ></p-dropdown>
+              </div>
+              <div class="sm:col-12 md:col-6">
+                <label for="paymentTerm">Chính sách tăng giá</label>
+                <p-dropdown
+                  emptyMessage="Danh sách trống"
+                  id="paymentTerm"
+                  [options]="paymentTermOptions"
+                  [(ngModel)]="property.paymentTerm"
+                  [baseZIndex]="1101"
+                  [editable]="true"
+                  appendTo="body"
+                  appInputRestriction
+                  formControlName="paymentTerm"
+                  [class]="
+                    displayMessage.paymentTerm ? 'ng-dirty ng-invalid' : ''
+                  "
+                ></p-dropdown>
+              </div>
+              <div class="sm:col-12 md:col-6">
+                <label for="numberOfFrontage ">Số mặt tiền</label>
+                <p-inputNumber
+                  [(ngModel)]="property.numberOfFrontage"
+                  [min]="0"
+                  [max]="3"
+                  inputId="numberOfFrontage "
+                  locale="vi-VN"
+                  placeholder="Nhập số mặt tiền"
+                  appInputRestriction
+                  formControlName="numberOfFrontage"
+                ></p-inputNumber>
+              </div>
+              <div class="sm:col-12 md:col-6">
+                <label for="direction">Hướng</label>
+                <p-dropdown
+                  emptyMessage="Danh sách trống"
+                  [ngModel]="selectedDirection"
+                  [options]="directions"
+                  placeholder="Chọn hướng"
+                  [showClear]="false"
+                  [baseZIndex]="1101"
+                  optionLabel="label"
+                  appendTo="body"
+                  appInputRestriction
+                  formControlName="direction"
+                  [scrollHeight]="270"
+                  (onChange)="changeDirection($event)"
+                ></p-dropdown>
+              </div>
+              <div class="sm:col-12 md:col-6">
+                <label for="floorArea">Diện tích sàn</label>
+                <p-inputNumber
+                  [(ngModel)]="property.floorArea"
+                  inputId="floorArea"
+                  [min]="0"
+                  [max]="10000"
+                  suffix=" m²"
+                  locale="vi-VN"
+                  [minFractionDigits]="1"
+                  placeholder="Nhập diện tích sử dụng"
+                  appInputRestriction
+                  formControlName="floorArea"
+                ></p-inputNumber>
+              </div>
+              <div class="sm:col-12 md:col-6">
+                <label for="area">Diện tích đất</label>
+                <p-inputNumber
+                  [(ngModel)]="property.area"
+                  [min]="0"
+                  [max]="10000"
+                  inputId="area"
+                  suffix=" m²"
+                  locale="vi-VN"
+                  [minFractionDigits]="1"
+                  placeholder="Nhập diện tích đất"
+                  appInputRestriction
+                  formControlName="area"
+                ></p-inputNumber>
+              </div>
+              <div class="sm:col-12 md:col-6">
+                <label for="vertical">Chiều dài</label>
+                <p-inputNumber
+                  [(ngModel)]="property.vertical"
+                  inputId="vertical"
+                  suffix=" m"
+                  locale="vi-VN"
+                  [min]="0"
+                  [max]="100"
+                  [minFractionDigits]="1"
+                  placeholder="Nhập Chiều dài"
+                  appInputRestriction
+                  formControlName="vertical"
+                ></p-inputNumber>
+              </div>
+
+              <div class="sm:col-12 md:col-6">
+                <label for="horizontal">Chiều rộng</label>
+                <p-inputNumber
+                  [(ngModel)]="property.horizontal"
+                  inputId="horizontal"
+                  suffix=" m"
+                  locale="vi-VN"
+                  [minFractionDigits]="1"
+                  [min]="0"
+                  [max]="100"
+                  placeholder="Nhập Chiều rộng"
+                  appInputRestriction
+                  formControlName="horizontal"
+                ></p-inputNumber>
+              </div>
+              <div class="sm:col-12 md:col-6">
+                <label for="frontage">Mặt tiền</label>
+                <p-inputNumber
+                  [(ngModel)]="property.frontage"
+                  inputId="frontage"
+                  suffix=" m"
+                  locale="vi-VN"
+                  [min]="0"
+                  [max]="100"
+                  [minFractionDigits]="1"
+                  placeholder="Nhập độ rộng mặt tiền"
+                  appInputRestriction
+                  formControlName="frontage"
+                ></p-inputNumber>
+              </div>
+              <div class="sm:col-12 md:col-6">
+                <label for="roadWidth">Lộ giới</label>
+                <p-inputNumber
+                  [(ngModel)]="property.roadWidth"
+                  inputId="roadWidth"
+                  suffix=" m"
+                  locale="vi-VN"
+                  [min]="0"
+                  [max]="100"
+                  [minFractionDigits]="1"
+                  placeholder="Nhập độ rộng lộ giới"
+                  appInputRestriction
+                  formControlName="roadWidth"
+                ></p-inputNumber>
+              </div>
+              <div class="sm:col-12 md:col-6">
+                <label for="floor">Tầng</label>
+                <input
+                  type="text"
+                  pInputText
+                  id="floor"
+                  placeholder="Nhập vị trí tầng"
+                  [(ngModel)]="property.floor"
+                  appInputRestriction
+                  formControlName="floor"
+                />
+              </div>
+
+              <div class="sm:col-12">
+                <label for="description">Mô tả tổng quan</label>
+                <dx-html-editor
+                  [height]="200"
+                  [(valueType)]="editorValueType"
+                  [(value)]="property.description"
+                >
+                  <dxo-toolbar>
+                    <dxi-item name="undo"></dxi-item>
+                    <dxi-item name="redo"></dxi-item>
+                    <dxi-item name="separator"></dxi-item>
+                    <dxi-item name="bold"></dxi-item>
+                    <dxi-item name="italic"></dxi-item>
+                    <dxi-item name="strike"></dxi-item>
+                    <dxi-item name="underline"></dxi-item>
+                    <dxi-item name="separator"></dxi-item>
+                    <dxi-item name="alignLeft"></dxi-item>
+                    <dxi-item name="alignCenter"></dxi-item>
+                    <dxi-item name="alignRight"></dxi-item>
+                    <dxi-item name="alignJustify"></dxi-item>
+                  </dxo-toolbar>
+                </dx-html-editor>
+              </div>
+            </div>
+          </p-fieldset>
+        </form>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      label="Huỷ bỏ"
+      icon="pi pi-times"
+      (onClick)="cancelDialog()"
+      class="mr-2"
+      styleClass="p-button-secondary"
+      [pTooltip]="'Huỷ bỏ nhập dữ liệu'"
+    ></p-button>
+    <p-button
+      label="Tạo mới"
+      icon="pi pi-check"
+      type="submit"
+      [loading]="loading"
+      [disabled]="!propertyForm.valid"
+      (onClick)="saveProperty()"
+      class="custom-button"
+      [pTooltip]="
+        propertyForm.valid
+          ? 'Tạo mới dữ liệu bạn đã nhập'
+          : 'Chỉ có thể tạo mới khi biểu mẫu không có lỗi'
+      "
+    ></p-button>
+  </ng-template>
+</p-dialog>
+<ng-container *ngIf="isShowOwnerDialog">
+  <app-owner-new-in-property
+    [isShowOwnerDialog]="isShowOwnerDialog"
+    (ownerStatusDialog)="getOwnerStatusDialog($event)"
+  ></app-owner-new-in-property>
+</ng-container>
+<ng-container *ngIf="isShowBrokerDialog">
+  <app-broker-new-in-property
+    [isShowBrokerDialog]="isShowBrokerDialog"
+    (brokerStatusDialog)="getBrokerStatusDialog($event)"
+  ></app-broker-new-in-property>
+</ng-container>
+<ng-container *ngIf="isShowProjectDialog">
+  <app-project-new-in-property
+    [isShowProjectDialog]="isShowProjectDialog"
+    (projectStatusDialog)="getProjectStatusDialog($event)"
+  ></app-project-new-in-property>
+</ng-container>
+
+<ng-container *ngIf="isShowAutocompleteDialog">
+  <app-autocomplete
+    [placeRes]="place"
+    [location]="locationTemp"
+    (autocomplete)="autocomplete()"
+    (propertyApply)="getApplyProperty($event)"
+    (isCloseDialog)="getAutocompleteState($event)"
+  ></app-autocomplete>
+</ng-container>

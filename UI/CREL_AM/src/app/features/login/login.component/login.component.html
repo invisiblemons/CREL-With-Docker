@@ -1,0 +1,120 @@
+<div
+  class="content full-page login-page flex justify-content-center align-items-center"
+>
+  <div class="grid">
+    <div class="col">
+      <form class="form">
+        <div class="card card-login card-white">
+          <div class="card-footer mt-4">
+            <div class="auth-fluid">
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="auth-body">
+                    <form
+                      class="md-float-material"
+                      (ngSubmit)="loginUser()"
+                      [formGroup]="loginForm"
+                    >
+                      <div class="auth-box">
+                        <div class="row mt-4">
+                          <div class="col-md-12">
+                            <h4
+                              class="text-center txt-primary"
+                              style="color: #929292; font-weight: 600"
+                            >
+                              Cho mừng đến với
+                              <h1 style="color: #007bff; font-weight: 600">
+                                CREL!
+                              </h1>
+                            </h4>
+                          </div>
+                        </div>
+
+                        <div class="grid">
+                          <div class="col">
+                            <div class="flex justify-content-center">
+                              <div class="field px-6 w-100">
+                                <div class="form-group mb-5">
+                                  <label for="userName">Tài khoản</label>
+                                  <input
+                                    id="userName"
+(keydown.space)="$event.preventDefault()"
+                                    type="text"
+                                    pInputText
+                                    class="form-control"
+                                    [(ngModel)]="userName"
+                                    name="userName"
+                                    appInputRestriction
+                      formControlName="userName"
+                                    [class]="
+                                      displayMessage.userName
+                                        ? 'ng-dirty ng-invalid'
+                                        : ''
+                                    "
+                                  />
+                                  <p-message
+                                    severity="error"
+                                    *ngIf="displayMessage.userName"
+                                    text="{{ displayMessage.userName }}"
+                                  ></p-message>
+                                </div>
+                                <div class="form-group">
+                                  <label for="password">Mật khẩu</label>
+                                  <input
+                                    id="password"
+                                    [(ngModel)]="password"
+                                    pInputText
+                                    class="form-control"
+                                    name="password"
+                                    type="password"
+                                    appInputRestriction
+                      formControlName="password"
+                                    [class]="
+                                      displayMessage.password
+                                        ? 'ng-dirty ng-invalid'
+                                        : ''
+                                    "
+                                  />
+                                  <p-message
+                                    severity="error"
+                                    *ngIf="displayMessage.password"
+                                    text="{{ displayMessage.password }}"
+                                  ></p-message>
+                                </div>
+                                <div class="flex justify-content-center m-2">
+                                  <a [routerLink]="'/quen-mat-khau'">
+                                    Quên mật khẩu?
+                                  </a>
+                                </div>
+                                <div class="flex justify-content-center mt-5">
+                                  <p-button
+                                    label="Đăng nhập"
+                                    icon="pi pi-sign-in"
+                                    type="submit"
+                                    [loading]="loading"
+                                    [disabled]="!loginForm.valid"
+                                    (onClick)="loginUser()"
+                                    class="custom-button"
+                                    [pTooltip]="
+                                    loginForm.valid
+                                        ? 'Đăng nhập vào hệ thống'
+                                        : 'Chỉ có thể đăng nhập khi biểu mẫu không có lỗi'
+                                    "
+                                  ></p-button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,26 @@
+
+:host ::ng-deep .custom-spinner .p-progress-spinner-circle {
+    animation: custom-progress-spinner-color 6s ease-in-out infinite;
+  }
+  
+  :host ::ng-deep .pi {
+    font-size: 0.8rem;
+  }
+  
+  @keyframes custom-progress-spinner-color {
+    100%,
+    0% {
+        stroke: #007AFC;
+    }
+    40% {
+        stroke: #007AFC;
+    }
+    66% {
+        stroke: #007AFC;
+    }
+    80%,
+    90% {
+        stroke: #007AFC;
+    }
+  }
+  

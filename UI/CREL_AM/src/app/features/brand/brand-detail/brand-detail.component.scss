@@ -1,0 +1,17 @@
+::ng-deep {
+  .custom-description {
+    border: none;
+    border-style: unset !important;
+  }
+  .dx-htmleditor-content {
+    padding: 0;
+  }
+  .p-dialog-mask.p-component-overlay {
+    z-index: 5 !important;
+  }
+}
+.custom-reset {
+  padding: 10px;
+  margin: 0;
+  height: 2.2rem;
+}

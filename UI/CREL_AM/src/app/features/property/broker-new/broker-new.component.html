@@ -1,0 +1,225 @@
+<p-dialog
+  [(visible)]="isShowDialog"
+  [style]="{ width: '80vw' }"
+  header="Tạo mới thông tin nhân viên môi giới"
+  [modal]="true"
+  styleClass="p-fluid"
+  (onHide)="hideDialog()"
+  [baseZIndex]="1100"
+  [closable]="false"
+  [draggable]="false"
+>
+  <ng-template pTemplate="content">
+    <div class="grid" *ngIf="isShowSkeleton">
+      <div class="sm:col-5">
+        <div class="flex justify-content-center">
+          <p-skeleton shape="circle" size="5rem"></p-skeleton>
+        </div>
+      </div>
+      <div class="sm:col-7">
+        <div class="grid">
+          <div class="sm:col-12 md:col-6">
+            <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+          </div>
+          <div class="sm:col-12 md:col-6">
+            <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+          </div>
+          <div class="sm:col-12 md:col-6">
+            <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+          </div>
+          <div class="sm:col-12 md:col-6">
+            <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+          </div>
+          <div class="sm:col-12 md:col-6">
+            <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+          </div>
+          <div class="sm:col-12 md:col-6">
+            <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+          </div>
+          <div class="sm:col-12">
+            <p-skeleton height="4rem" styleClass="mb-2"></p-skeleton>
+          </div>
+          <div class="sm:col-12 md:col-6">
+            <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+          </div>
+          <div class="sm:col-12">
+            <p-skeleton height="4rem" styleClass="mb-2"></p-skeleton>
+          </div>
+          <div class="sm:col-12 md:col-6">
+            <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+          </div>
+          <div class="sm:col-12">
+            <p-skeleton height="4rem" styleClass="mb-2"></p-skeleton>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <form novalidate (ngSubmit)="saveBroker()" [formGroup]="brokerForm">
+      <div class="grid" *ngIf="!isShowSkeleton">
+        <div class="sm:col-5">
+          <div class="flex justify-content-center">
+            <app-picture-upload
+              [imgSrc]="broker.avatarLink"
+              (outputImg)="getImgFromChild($event)"
+              [avatar]="true"
+            ></app-picture-upload>
+          </div>
+        </div>
+        <div class="sm:col-7">
+          <div class="grid">
+            <div class="form-group sm:col-12 md:col-6">
+              <label for="name"
+                >Họ và tên <span class="required">*</span></label
+              >
+              <input
+                type="text"
+                pInputText
+                id="name"
+                [(ngModel)]="broker.name"
+                placeholder="Nhập họ và tên"
+                appInputRestriction
+                formControlName="name"
+                [class]="displayMessage.name ? 'ng-dirty ng-invalid' : ''"
+              />
+              <p-message
+                severity="error"
+                *ngIf="displayMessage.name"
+                text="{{ displayMessage.name }}"
+              ></p-message>
+            </div>
+            <div class="form-group sm:col-12 md:col-6">
+              <label for="userName"
+                >Tài khoản <span class="required">*</span></label
+              >
+              <input
+                type="text"
+                pInputText
+                id="userName"
+                (keydown.space)="$event.preventDefault()"
+                [(ngModel)]="broker.userName"
+                placeholder="Nhập tài khoản"
+                appInputRestriction
+                formControlName="userName"
+                [class]="displayMessage.userName ? 'ng-dirty ng-invalid' : ''"
+              />
+              <p-message
+                severity="error"
+                *ngIf="displayMessage.userName"
+                text="{{ displayMessage.userName }}"
+              ></p-message>
+            </div>
+            <div class="form-group sm:col-12 md:col-6">
+              <label for="birthday">
+                Ngày sinh <span class="required">*</span></label
+              >
+              <p-calendar
+                [defaultDate]="maxDate"
+                inputId="birthday"
+                [(ngModel)]="broker.birthday"
+                [showIcon]="true"
+                appendTo="body"
+                [firstDayOfWeek]="1"
+                dateFormat="dd-mm-yy"
+                [readonlyInput]="true"
+                appInputRestriction
+                formControlName="birthday"
+                [minDate]="minDate"
+                [maxDate]="maxDate"
+              ></p-calendar>
+              <p-message
+                severity="error"
+                *ngIf="displayMessage.birthday"
+                text="{{ displayMessage.birthday }}"
+              ></p-message>
+            </div>
+            <div class="form-group sm:col-12 md:col-6">
+              <label for="email"
+                >Địa chỉ Email <span class="required">*</span></label
+              >
+              <input
+                type="text"
+                pInputText
+                id="email"
+                [(ngModel)]="broker.email"
+                placeholder="Nhập địa chỉ email"
+                appInputRestriction
+                formControlName="email"
+                [class]="displayMessage.email ? 'ng-dirty ng-invalid' : ''"
+              />
+              <p-message
+                severity="error"
+                *ngIf="displayMessage.email"
+                text="{{ displayMessage.email }}"
+              ></p-message>
+            </div>
+            <div class="form-group sm:col-12 md:col-6">
+              <label for="phoneNumber"
+                >Số điện thoại <span class="required">*</span></label
+              >
+              <p-inputMask
+                id="phoneNumber"
+                [(ngModel)]="broker.phoneNumber"
+                pKeyFilter="int"
+                appInputRestriction
+                formControlName="phoneNumber"
+                [class]="
+                  displayMessage.phoneNumber ? 'ng-dirty ng-invalid' : ''
+                "
+                placeholder="Nhập số điện thoại"
+                mask="9999 999 999"
+              ></p-inputMask>
+              <p-message
+                severity="error"
+                *ngIf="displayMessage.phoneNumber"
+                text="{{ displayMessage.phoneNumber }}"
+              ></p-message>
+            </div>
+            <div class="form-group sm:col-12 md:col-6">
+              <label for="gender"> Giới tính </label>
+              <p-dropdown
+                emptyMessage="Danh sách trống"
+                emptyFilterMessage="Không tìm thấy kết quả"
+                id="gender"
+                [options]="genders"
+                [(ngModel)]="selectedGender"
+                placeholder="Chọn giới tính"
+                [showClear]="true"
+                [baseZIndex]="1101"
+                appendTo="body"
+                optionLabel="gender"
+                appInputRestriction
+                formControlName="gender"
+              ></p-dropdown>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      label="Huỷ bỏ"
+      icon="pi pi-times"
+      (onClick)="hideDialog()"
+      class="mr-2"
+      styleClass="p-button-secondary"
+      [pTooltip]="'Huỷ bỏ nhập dữ liệu'"
+    ></p-button>
+    <p-button
+      label="Tạo mới"
+      icon="pi pi-check"
+      type="submit"
+      [loading]="loading"
+      [disabled]="!brokerForm.valid"
+      (onClick)="saveBroker()"
+      class="custom-button"
+      [pTooltip]="
+        brokerForm.valid
+          ? 'Tạo mới dữ liệu bạn đã nhập'
+          : 'Chỉ có thể tạo mới khi biểu mẫu không có lỗi'
+      "
+    ></p-button>
+  </ng-template>
+</p-dialog>

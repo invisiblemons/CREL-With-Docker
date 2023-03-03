@@ -1,0 +1,19 @@
+.card-custom {
+  border: 3px solid #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgb(0 0 0 / 20%) !important;
+  background: white;
+  padding: 1rem;
+  max-height: 79vh;
+  overflow-y: auto;
+}
+
+::ng-deep {
+  .custom-description {
+    border: none;
+    border-style: unset !important;
+  }
+  .dx-htmleditor-content {
+    padding: 0;
+  }
+}

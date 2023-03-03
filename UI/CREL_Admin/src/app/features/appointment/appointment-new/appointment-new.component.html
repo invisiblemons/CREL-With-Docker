@@ -1,0 +1,131 @@
+<p-dialog
+  [(visible)]="isShowDialog"
+  [style]="{ width: '80vw' }"
+  header="Tạo mới thông tin cuộc hẹn"
+  [modal]="true"
+  styleClass="p-fluid"
+  (onHide)="hideDialog()"
+  [baseZIndex]="1100"
+  [closable]="false"
+  [draggable]="false"
+>
+  <ng-template pTemplate="content">
+    <div class="grid" *ngIf="isShowSkeleton">
+      <div class="sm:col-12 md:col-6">
+        <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+      </div>
+      <div class="sm:col-12 md:col-6">
+        <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+      </div>
+      <div class="sm:col-12 md:col-6">
+        <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+      </div>
+      <div class="sm:col-12 md:col-6">
+        <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+      </div>
+      <div class="sm:col-12 md:col-6">
+        <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+      </div>
+      <div class="sm:col-12 md:col-6">
+        <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+      </div>
+      <div class="sm:col-12 md:col-6">
+        <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+      </div>
+      <div class="sm:col-12 md:col-6">
+        <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+      </div>
+      <div class="sm:col-12 md:col-6">
+        <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+      </div>
+      <div class="sm:col-12 md:col-6">
+        <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+      </div>
+      <div class="sm:col-12 md:col-6">
+        <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+      </div>
+      <div class="sm:col-12 md:col-6">
+        <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+      </div>
+      <div class="sm:col-12">
+        <p-skeleton height="4rem" styleClass="mb-2"></p-skeleton>
+      </div>
+    </div>
+    <form
+      novalidate
+      (ngSubmit)="saveAppointment()"
+      [formGroup]="appointmentForm"
+    >
+      <div class="grid" *ngIf="!isShowSkeleton">
+        <div class="form-group sm:col-12 md:col-6">
+          <label for="name">Tên <span class="required">*</span></label>
+          <input
+            type="text"
+            pInputText
+            id="name"
+            [(ngModel)]="appointment.name"
+            autofocus
+            placeholder="Nhập tên cuộc hẹn"
+            appInputRestriction
+            formControlName="name"
+            [class]="displayMessage.name ? 'ng-dirty ng-invalid' : ''"
+          />
+          <p-message
+            severity="error"
+            *ngIf="displayMessage.name"
+            text="{{ displayMessage.name }}"
+          ></p-message>
+        </div>
+
+        <div class="sm:col-12">
+          <label for="description">Mô tả</label>
+          <dx-html-editor
+            [height]="200"
+            [(valueType)]="editorValueType"
+            [(value)]="appointment.description"
+          >
+            <dxo-toolbar>
+              <dxi-item name="undo"></dxi-item>
+              <dxi-item name="redo"></dxi-item>
+              <dxi-item name="separator"></dxi-item>
+              <dxi-item name="bold"></dxi-item>
+              <dxi-item name="italic"></dxi-item>
+              <dxi-item name="strike"></dxi-item>
+              <dxi-item name="underline"></dxi-item>
+              <dxi-item name="separator"></dxi-item>
+              <dxi-item name="alignLeft"></dxi-item>
+              <dxi-item name="alignCenter"></dxi-item>
+              <dxi-item name="alignRight"></dxi-item>
+              <dxi-item name="alignJustify"></dxi-item>
+            </dxo-toolbar>
+          </dx-html-editor>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      label="Huỷ bỏ"
+      icon="pi pi-times"
+      (onClick)="cancelDialog()"
+      class="mr-2"
+      styleClass="p-button-secondary"
+      [pTooltip]="'Huỷ bỏ nhập dữ liệu'"
+    ></p-button>
+    <p-button
+      label="Tạo mới"
+      icon="pi pi-check"
+      type="submit"
+      [loading]="loading"
+      [disabled]="!appointmentForm.valid"
+      (onClick)="saveAppointment()"
+      class="custom-button"
+      [pTooltip]="
+        appointmentForm.valid
+          ? 'Tạo mới dữ liệu bạn đã nhập'
+          : 'Chỉ có thể tạo mới khi biểu mẫu không có lỗi'
+      "
+    ></p-button>
+  </ng-template>
+</p-dialog>

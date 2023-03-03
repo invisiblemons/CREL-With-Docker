@@ -1,0 +1,134 @@
+<p-dialog
+  [(visible)]="isShowDialog"
+  [style]="{ width: '90%', height: '90%' }"
+  header="Đề xuất bất động sản"
+  [modal]="true"
+  styleClass="p-fluid"
+  (onHide)="hideDialog()"
+  [dismissableMask]="true"
+  [closable]="true"
+  [draggable]="false"
+  [autoZIndex]="false"
+>
+  <ng-template pTemplate="content">
+    <div class="grid grid-nogutter">
+      <div class="col-12">
+        <div class="grid grid-nogutter mb-5">
+          <div class="col-sm-12">
+            <dx-drop-down-box
+              [(value)]="propertyGridBoxValue"
+              [(opened)]="isPropertyGridBoxOpened"
+              valueExpr="id"
+              [deferRendering]="false"
+              [displayExpr]="propertyGridBox_displayExpr"
+              placeholder="Tìm kiếm bất động sản..."
+              [showClearButton]="true"
+              [dataSource]="propertyGridDataSource"
+              (onOptionChanged)="onPropertyGridBoxOptionChanged($event)"
+            >
+              <div *dxTemplate="let data of 'content'">
+                <dx-data-grid
+                  [dataSource]="propertyGridDataSource"
+                  [columns]="propertyGridColumns"
+                  [hoverStateEnabled]="true"
+                  [(selectedRowKeys)]="propertyGridBoxValue"
+                  height="100%"
+                >
+                  <dxo-selection mode="single"></dxo-selection>
+                  <dxo-filter-row
+                    [visible]="true"
+                    [betweenEndText]="'Kết thúc'"
+                    [betweenStartText]="'Bắt đầu'"
+                    [resetOperationText]="'Khôi phục'"
+                    [operationDescriptions]="{
+                      equal: 'Bằng',
+                      notEqual: 'Không bằng',
+                      lessThan: 'Nhỏ hơn',
+                      greaterThan: 'Lớn hơn',
+                      lessThanOrEqual: 'Nhỏ hơn hoặc bằng',
+                      greaterThanOrEqual: 'Lớn hơn hoặc bằng',
+                      between: 'Nằm trong khoảng'
+                    }"
+                  >
+                  </dxo-filter-row>
+                  <dxo-scrolling mode="virtual"></dxo-scrolling>
+                  <dxo-paging [enabled]="true" [pageSize]="10"></dxo-paging>
+                </dx-data-grid>
+              </div>
+            </dx-drop-down-box>
+          </div>
+        </div>
+        <div class="grid">
+          <ng-container *ngIf="isShowSkeleton">
+            <p-skeleton width="100%" styleClass="mb-2"></p-skeleton>
+            <p-skeleton width="100%" styleClass="mb-4"></p-skeleton>
+          </ng-container>
+          <ng-container *ngIf="!isShowSkeleton">
+            <p-pickList
+              [source]="properties"
+              [target]="selectedProperties"
+              sourceHeader="Danh sách bất động sản có thể đề xuất"
+              targetHeader="Danh sách bất động sản được chọn để đề xuất"
+              [dragdrop]="true"
+              [responsive]="true"
+              [sourceStyle]="{ height: '100%', width: '100%' }"
+              [targetStyle]="{ height: '100%', width: '100%' }"
+              [style]="{ height: '49vh', width: '87vw', padding: '0 1rem' }"
+              styleClass="custom-picklist"
+              [showSourceControls]="false"
+              [showTargetControls]="false"
+            >
+              <ng-template let-property pTemplate="item">
+                <div class="property-item" [id]="property.id">
+                  <div class="image-container">
+                    <img
+                      [src]="
+                        property.mainImage
+                          ? property.mainImage.link
+                          : IMAGE_DEFAULT
+                      "
+                      [alt]="property.name"
+                      class="property-image"
+                    />
+                  </div>
+                  <div class="property-list-detail">
+                    <div class="mb-2">
+                      <strong>{{ property.name ? property.name : "" }}</strong>
+                    </div>
+                    <div class="text-muted">
+                      <i class="mr -2 pi pi-map-marker"></i>
+                      {{ property.addressFull ? property.addressFull : "" }}
+                    </div>
+                  </div>
+                  <div class="product-list-action">
+                    <button
+                      class="btn btn-primary btn-round btn-icon animation-on-hover mr-2"
+                      (click)="openDetailProperty(property)"
+                      pTooltip="Xem chi tiết"
+                    >
+                      <i class="pi pi-eye"> </i>
+                    </button>
+                  </div>
+                </div>
+              </ng-template>
+            </p-pickList>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      label="Đề xuất"
+      icon="pi pi-chevron-circle-right"
+      type="submit"
+      [loading]="loading"
+      [disabled]="selectedProperties.length === 0"
+      (onClick)="suggestProperty()"
+      class="custom-button"
+      [pTooltip]="'Đề xuất bất động sản'"
+    ></p-button>
+  </ng-template>
+</p-dialog>
+<router-outlet></router-outlet>

@@ -1,0 +1,9 @@
+::ng-deep {
+    .custom-p-table>.p-datatable-wrapper {
+        max-height: 43vh !important;
+        min-height: 43vh !important;
+    }
+    .w-42 {
+        width: 42% !important;
+    }
+}

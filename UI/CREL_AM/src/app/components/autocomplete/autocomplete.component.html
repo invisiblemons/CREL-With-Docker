@@ -1,0 +1,116 @@
+<p-dialog
+  [(visible)]="isShowDialog"
+  [modal]="true"
+  [style]="{ width: '45%' }"
+  [draggable]="false"
+  [resizable]="false"
+  (onHide)="hideDialog()"
+  [header]="!location?'Tìm nhanh địa chỉ':''"
+  [dismissableMask]="location?false:true"
+  [closable]="location?false:true"
+>
+  <div class="row mt-4 mb-7" *ngIf="!location">
+    <div class="col-sm-12 my-auto">
+      <input
+        #addressText
+        type="text"
+        pInputText
+        id="address"
+        class="w-100"
+        placeholder="Nhập địa chỉ bạn muốn tìm kiếm"
+        [(ngModel)]="autocompleteInput"
+        (keyup)="onKeyAddress($event)"
+      />
+    </div>
+  </div>
+  <div class="mt-4" *ngIf="placeRes || location">
+    <p-fieldset [legend]="location?'Địa chỉ do bạn nhập vào':'Kết quả tìm kiếm'">
+      <div class="row">
+        <div class="col-12">
+          <div class="row mb-2">
+            <div class="col-6 heading-content">Quận/Huyện</div>
+            <div class="col-6">
+              {{ district ? district : "" }}
+            </div>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="row mb-2">
+            <div class="col-6 heading-content">Phường</div>
+            <div class="col-6">
+              {{ ward ? ward : "" }}
+            </div>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="row mb-2">
+            <div class="col-6 heading-content">Đường</div>
+            <div class="col-6">
+              {{ street ? street : "" }}
+            </div>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="row">
+            <div class="col-6 heading-content">Số nhà, toà nhà</div>
+            <div class="col-6">
+              {{ streetNumber ? streetNumber : "" }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </p-fieldset>
+  </div>
+  <div class="container mt-2" *ngIf="isShowExist">
+    <div class="row">
+      <div class="col-12"><strong>Đã tồn tại mặt bằng tại địa chỉ này</strong></div>
+      <div class="col-12">
+        <ng-container *ngFor="let property of properties">
+          <div class="property-item">
+            <div class="image-container">
+              <img
+                [src]="
+                  property.mainImage
+                    ? property.mainImage.link
+                    : IMAGE_DEFAULT
+                "
+                [alt]="property.name"
+                class="property-image"
+              />
+            </div>
+            <div class="property-list-detail">
+              <div class="mb-2">
+                <strong>{{ property.name ? property.name : "" }}</strong>
+              </div>
+              <div class="text-muted">
+                Lần cuối cập nhật: {{ property.lastUpdateDate | date: "dd-MM-yyyy" }}
+              </div>
+            </div>
+            <div class="product-list-action">
+              <button
+                class="btn btn-primary btn-round btn-icon animation-on-hover mr-2"
+                (click)="applyProperty(property)"
+                pTooltip="Sử dụng dữ liệu này"
+              >
+                <i class="pi pi-arrow-right"> </i>
+              </button>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col-12">
+        <span>Hoặc tạo mới với địa chỉ này</span><span>
+          <button
+          type="button"
+          (click)="createNew()"
+          class="btn btn-primary btn-round animation-on-hover ml-2"
+        >
+          <i class="pi pi-plus"> </i> Tạo mới
+        </button>
+      </span>
+      </div>
+    </div>
+  </div>
+</p-dialog>

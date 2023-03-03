@@ -1,0 +1,337 @@
+<div class="content">
+  <div class="grid" *ngIf="isShowSkeleton">
+    <div class="sm:col-6 md:col-3 mb-6">
+      <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+      <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+      <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+      <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+    </div>
+    <div class="sm:col-6 md:col-3 mb-6">
+      <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+      <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+      <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+      <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+    </div>
+    <div class="sm:col-6 md:col-3 mb-6">
+      <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+      <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+      <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+      <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+    </div>
+    <div class="sm:col-6 md:col-3 mb-6">
+      <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+      <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+      <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+      <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+    </div>
+    <div class="sm:col-6">
+      <p-skeleton height="3rem" styleClass="mb-3"></p-skeleton>
+      <p-skeleton height="3rem" styleClass="mb-3"></p-skeleton>
+      <p-skeleton height="3rem" styleClass="mb-3"></p-skeleton>
+      <p-skeleton height="3rem" styleClass="mb-3"></p-skeleton>
+      <p-skeleton height="3rem" styleClass="mb-3"></p-skeleton>
+    </div>
+    <div class="sm:col-6">
+      <p-skeleton height="3rem" styleClass="mb-3"></p-skeleton>
+      <p-skeleton height="3rem" styleClass="mb-3"></p-skeleton>
+      <p-skeleton height="3rem" styleClass="mb-3"></p-skeleton>
+      <p-skeleton height="3rem" styleClass="mb-3"></p-skeleton>
+      <p-skeleton height="3rem" styleClass="mb-3"></p-skeleton>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="row" *ngIf="!isShowSkeleton">
+      <div class="col-lg-3 col-md-6 my-2 pl-0">
+        <div class="card custom-card card-stats">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-5">
+                <div class="info-icon text-center icon-color-1">
+                  <i class="pi pi-building"> </i>
+                </div>
+              </div>
+              <div class="col-7">
+                <div class="numbers">
+                  <p class="card-category">Bất động sản</p>
+                  <h3 class="card-title">{{ properties.length }}</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <hr />
+
+            <div class="stats" (click)="openProperties()" type="button">
+              <i class="tim-icons icon-sound-wave"> </i> Xem chi tiết
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 my-2">
+        <div class="card custom-card card-stats">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-5">
+                <div class="info-icon text-center icon-color-2">
+                  <i class="pi pi-id-card"> </i>
+                </div>
+              </div>
+              <div class="col-7">
+                <div class="numbers">
+                  <p class="card-category">Thương hiệu</p>
+                  <h3 class="card-title">{{ brands.length }}</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <hr />
+
+            <div class="stats" (click)="openBrands()" type="button">
+              <i class="tim-icons icon-sound-wave"> </i> Xem chi tiết
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 my-2">
+        <div class="card custom-card card-stats">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-5">
+                <div class="info-icon text-center icon-color-3">
+                  <i class="pi pi-user"> </i>
+                </div>
+              </div>
+              <div class="col-7">
+                <div class="numbers">
+                  <p class="card-category history">Nhân viên môi giới</p>
+                  <h3 class="card-title">{{ brokers.length }}</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <hr />
+
+            <div class="stats" (click)="openBrokers()" type="button">
+              <i class="tim-icons icon-sound-wave"> </i> Xem chi tiết
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 my-2 pr-0">
+        <div class="card custom-card card-stats">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-5">
+                <div class="info-icon text-center icon-color-4">
+                  <i class="pi pi-users"> </i>
+                </div>
+              </div>
+              <div class="col-7">
+                <div class="numbers">
+                  <p class="card-category history">Nhóm</p>
+                  <h3 class="card-title">{{ teams.length }}</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <hr />
+
+            <div class="stats" (click)="openTeams()" type="button">
+              <i class="tim-icons icon-sound-wave"> </i> Xem chi tiết
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-container *ngIf="isShowErrorPanel">
+        <div class="col-12" style="max-height: 50vh">
+          <div class="container">
+            <div class="row">
+              <div
+                class="col-12 flex justify-content-center align-items-center"
+              >
+                <h3 class="text-muted mb-0">Chưa tham gia quản lý nhóm.</h3>
+              </div>
+              <div
+                class="col-12 flex justify-content-center align-items-center"
+              >
+                <img
+                  src="assets/img/No data.svg"
+                  alt="Chưa tham gia nhóm"
+                  style="max-width: 35%;"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="!isShowErrorPanel">
+        <div class="col-6">
+          <div class="card mb-0">
+            <app-brand-request></app-brand-request>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="card mb-0">
+            <p-table
+              [resizableColumns]="true"
+              [responsive]="true"
+              inputId="datatable"
+              [value]="contracts"
+              responsiveLayout="scroll"
+              [paginator]="true"
+              [rows]="TABLE_CONFIG.ROWS"
+              [rowsPerPageOptions]="TABLE_CONFIG.ROWS_PER_PAGE"
+              [globalFilterFields]="['id', 'brandName', 'brokerName']"
+              [rowHover]="true"
+              styleClass="p-sticky p-datatable-striped custom-p-table"
+              [columns]="selectedColumns"
+              [autoLayout]="true"
+            >
+              <ng-template pTemplate="caption">
+                <div class="grid highlight">
+                  <div class="col-9 flex align-items-center">
+                    <h3 class="p-m-0 mb-0" style="font-weight: 600">
+                      Hợp đồng sắp tới hạn
+                    </h3>
+                  </div>
+                  <div class="col-3">
+                    <div class="flex justify-content-end">
+                      <p-multiSelect
+                        name="columns"
+                        [options]="displayCols"
+                        [(ngModel)]="selectedColumns"
+                        [maxSelectedLabels]="0"
+                        optionLabel="header"
+                        selectedItemsLabel="{{
+                          cols.length === selectedColumns.length
+                            ? 'Tất cả'
+                            : 'Chọn cột hiển thị'
+                        }}"
+                        [style]="{ minWidth: '224px' }"
+                        [scrollHeight]="220"
+                        placeholder="Chọn cột hiển thị"
+                      >
+                      </p-multiSelect>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+
+              <ng-template pTemplate="header" let-columns>
+                <tr>
+                  <ng-container
+                    *ngFor="let col of columns"
+                    [ngSwitch]="col.field"
+                  >
+                    <th
+                      *ngSwitchCase="col.field === 'action' ? col.field : ''"
+                      [ngStyle]="{ textAlign: col.headerAlign }"
+                    >
+                      {{ col.header }}
+                    </th>
+                    <th
+                      *ngSwitchDefault
+                      [ngStyle]="{ textAlign: col.headerAlign }"
+                      pSortableColumn="{{ col.field }}"
+                    >
+                      {{ col.header }}
+                      <p-sortIcon field="{{ col.field }}"></p-sortIcon>
+                    </th>
+                  </ng-container>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="colgroup" let-columns>
+                <colgroup>
+                  <col
+                    *ngFor="let col of columns"
+                    [ngStyle]="{ width: col.width || 'auto' }"
+                  />
+                </colgroup>
+              </ng-template>
+
+              <ng-template
+                pTemplate="body"
+                let-contract
+                let-columns="columns"
+                let-i="rowIndex"
+              >
+                <tr>
+                  <ng-container
+                    *ngFor="let col of columns"
+                    [ngSwitch]="col.field"
+                  >
+                    <td
+                      *ngSwitchCase="'startDate'"
+                      [ngStyle]="{ textAlign: col.textAlign }"
+                    >
+                      {{ contract[col.field] | date: DATE_FORMAT }}
+                    </td>
+                    <td
+                      *ngSwitchCase="'endDate'"
+                      [ngStyle]="{ textAlign: col.textAlign }"
+                    >
+                      {{ contract[col.field] | date: DATE_FORMAT }}
+                    </td>
+                    <td
+                      *ngSwitchDefault
+                      [attr.title]="contract[col.field]"
+                      [ngStyle]="{ textAlign: col.textAlign }"
+                    >
+                      {{ contract[col.field] }}
+                    </td>
+                    <td
+                      *ngSwitchCase="'action'"
+                      [ngStyle]="{ textAlign: col.textAlign }"
+                    >
+                      <button
+                        class="btn btn-primary btn-round btn-icon animation-on-hover mr-2"
+                        (click)="openDetailContract(contract)"
+                        pTooltip="Xem chi tiết"
+                      >
+                        <i class="pi pi-eye"> </i>
+                      </button>
+                      <!-- <button
+                class="btn btn-success btn-round btn-icon animation-on-hover mr-2"
+                (click)="openEditContract(contract)"
+                pTooltip="Chỉnh sửa"
+              >
+                <i class="pi pi-pencil"> </i>
+              </button>
+              <button
+                [disabled]="contract.status === 0 ? true : false"
+                class="btn btn-danger btn-round animation-on-hover btn-icon"
+                (click)="deleteContract(contract)"
+                pTooltip="Xoá"
+              >
+                <i class="pi pi-trash"> </i>
+              </button> -->
+                    </td>
+                  </ng-container>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td colspan="3" *ngIf="isShowSpin" class="text-center">
+                    <p-progressSpinner
+                      [style]="{ width: '50px', height: '50px' }"
+                      styleClass="custom-spinner"
+                      strokeWidth="8"
+                      fill="#EEEEEE"
+                      animationDuration=".5s"
+                    ></p-progressSpinner>
+                  </td>
+                  <td colspan="3" *ngIf="!isShowSpin" class="text-center">
+                    Không có hợp đồng thuê sắp tới hạn.
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,178 @@
+<p-dialog
+  [(visible)]="isShowDialog"
+  [style]="{ width: '60vw' }"
+  header="Cập nhật thông tin thông tin người sở hữu"
+  [modal]="true"
+  styleClass="p-fluid"
+  (onHide)="hideDialog()"
+  [closable]="false"
+  [draggable]="false"
+  [baseZIndex]="1100"
+>
+  <ng-template pTemplate="content">
+    <div class="grid" *ngIf="isShowSkeleton">
+      <div class="sm:col-12 md:col-6">
+        <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+      </div>
+      <div class="sm:col-12 md:col-6">
+        <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+      </div>
+      <div class="sm:col-12 md:col-6">
+        <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+      </div>
+      <div class="sm:col-12 md:col-6">
+        <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+      </div>
+      <div class="sm:col-12">
+        <p-skeleton height="4rem" styleClass="mb-2"></p-skeleton>
+      </div>
+    </div>
+
+    <form novalidate (ngSubmit)="saveOwner()" [formGroup]="ownerForm">
+      <div class="grid" *ngIf="!isShowSkeleton">
+        <div class="form-group sm:col-12 md:col-6">
+          <label for="status">Trạng thái <span class="required">*</span></label>
+          <p-dropdown
+            emptyMessage="Danh sách trống"
+            [ngModel]="selectedStatus"
+            [options]="statuses"
+            placeholder="Chọn trạng thái"
+            [showClear]="true"
+            [baseZIndex]="1101"
+            optionLabel="label"
+            (onChange)="changeStatus($event)"
+            appInputRestriction
+            formControlName="status"
+            [ngClass]="{ 'is-invalid': displayMessage.status }"
+            inputStyleClass="form-control"
+          >
+            <ng-template let-option pTemplate="item">
+              <p-tag
+                *ngIf="option.value === 0"
+                icon="pi pi-times"
+                severity="danger"
+                value="{{ option.label }}"
+                [rounded]="true"
+              ></p-tag>
+              <p-tag
+                *ngIf="option.value === 1"
+                icon="pi pi-check"
+                severity="success"
+                value="{{ option.label }}"
+                [rounded]="true"
+              ></p-tag>
+            </ng-template>
+          </p-dropdown>
+          <span class="invalid-feedback">
+            {{ displayMessage.status }}
+          </span>
+        </div>
+        <div class="form-group sm:col-12 md:col-6">
+          <label for="name">Họ và tên <span class="required">*</span></label>
+          <input
+            type="text"
+            pInputText
+            placeholder="Nhập họ và tên người sở hữu"
+            id="name"
+            [(ngModel)]="owner.name"
+            appInputRestriction
+            formControlName="name"
+            [class]="displayMessage.name ? 'ng-dirty ng-invalid' : ''"
+          />
+          <p-message
+            severity="error"
+            *ngIf="displayMessage.name"
+            text="{{ displayMessage.name }}"
+          ></p-message>
+        </div>
+        <div class="form-group sm:col-12 md:col-6">
+          <label for="gender">Giới tính <span class="required">*</span></label>
+          <p-dropdown
+            emptyMessage="Danh sách trống"
+            id="gender"
+            [options]="genders"
+            [(ngModel)]="selectedGender"
+            placeholder="Chọn giới tính"
+            [showClear]="true"
+            [baseZIndex]="1101"
+            optionLabel="gender"
+            appendTo="body"
+            appInputRestriction
+            formControlName="gender"
+            [class]="displayMessage.gender ? 'ng-dirty ng-invalid' : ''"
+          ></p-dropdown>
+          <p-message
+            severity="error"
+            *ngIf="displayMessage.gender"
+            text="{{ displayMessage.gender }}"
+          ></p-message>
+        </div>
+        <div class="form-group sm:col-12 md:col-6">
+          <label for="email"
+            >Địa chỉ Email <span class="required">*</span></label
+          >
+          <input
+            type="text"
+            pInputText
+            id="email"
+            [(ngModel)]="owner.email"
+            appInputRestriction
+            formControlName="email"
+            placeholder="Địa chỉ email"
+            [class]="displayMessage.email ? 'ng-dirty ng-invalid' : ''"
+          />
+          <p-message
+            severity="error"
+            *ngIf="displayMessage.email"
+            text="{{ displayMessage.email }}"
+          ></p-message>
+        </div>
+        <div class="form-group sm:col-12 md:col-6">
+          <label for="phoneNumber"
+            >Số điện thoại <span class="required">*</span></label
+          >
+          <p-inputMask
+            id="phoneNumber"
+            [(ngModel)]="owner.phoneNumber"
+            pKeyFilter="int"
+            appInputRestriction
+            formControlName="phoneNumber"
+            [class]="displayMessage.phoneNumber ? 'ng-dirty ng-invalid' : ''"
+            placeholder="Nhập số điện thoại"
+            mask="9999 999 999"
+          ></p-inputMask>
+          <p-message
+            severity="error"
+            *ngIf="displayMessage.phoneNumber"
+            text="{{ displayMessage.phoneNumber }}"
+          ></p-message>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      label="Huỷ bỏ"
+      icon="pi pi-times"
+      (onClick)="cancelDialog()"
+      class="mr-2"
+      styleClass="p-button-secondary"
+      [pTooltip]="'Huỷ bỏ nhập dữ liệu'"
+    ></p-button>
+    <p-button
+      label="Cập nhật"
+      icon="pi pi-check"
+      type="submit"
+      [loading]="loading"
+      [disabled]="!ownerForm.valid"
+      (onClick)="saveOwner()"
+      class="custom-button"
+      [pTooltip]="
+        ownerForm.valid
+          ? 'Cập nhật dữ liệu bạn đã nhập'
+          : 'Chỉ có thể cập nhật khi biểu mẫu không có lỗi'
+      "
+    ></p-button>
+  </ng-template>
+</p-dialog>

@@ -1,0 +1,65 @@
+
+
+::ng-deep {
+  .custom-description {
+    border: none;
+    border-style: unset !important;
+    padding: 0;
+  }
+}
+
+// Tree selected
+::ng-deep .p-treeselect {
+  width: 100%;
+}
+
+::ng-deep .p-treeselect-items-wrapper {
+  max-height: 15rem !important;
+}
+
+.history {
+  margin-bottom: 2.8rem !important;
+}
+
+::ng-deep {
+  .custom-button {
+    background-image: unset !important;
+    &:hover {
+      background-image: unset !important;
+      background-color: unset !important;
+    }
+  }
+  .ward-custom.p-dialog .p-dialog-header {
+    padding: .5rem 1.5rem;
+  }
+  .ward-custom.p-dialog .p-dialog-content {
+    padding: 0 1.5rem 0rem 1.5rem;
+  }
+  .custom-description {
+    border: none;
+    border-style: unset !important;
+  }
+  .dx-htmleditor-content {
+    padding: 0;
+  }
+}
+
+:host ::ng-deep .p-rowgroup-header {
+  span {
+      font-weight: 600;
+  }
+
+  .p-row-toggler {
+      vertical-align: middle;
+      margin-right: .25rem;
+  }
+}
+:host ::ng-deep .p-rowgroup-footer td {
+  font-weight: 600;
+}
+::ng-deep {
+  .custom-table-ward>.p-datatable-wrapper {
+      max-height: 46vh !important;
+      min-height: 46vh !important;
+  }
+}

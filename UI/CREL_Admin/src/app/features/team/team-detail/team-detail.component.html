@@ -1,0 +1,664 @@
+<p-dialog
+  header="Chi tiết nhóm"
+  [(visible)]="isShowDialog"
+  [style]="{ width: '80vw' }"
+  [modal]="true"
+  styleClass="p-fluid"
+  (onHide)="hideDialog()"
+  [dismissableMask]="true"
+  [closable]="true"
+  [draggable]="false"
+  [baseZIndex]="1100"
+>
+  <div class="grid" *ngIf="isShowSkeleton">
+    <div class="sm:col-6">
+      <div class="grid">
+        <div class="sm:col-12 md:col-6">
+          <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+        </div>
+        <div class="sm:col-12 md:col-6">
+          <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+        </div>
+        <div class="sm:col-12 md:col-6">
+          <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+        </div>
+        <div class="sm:col-12 md:col-6">
+          <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+        </div>
+        <div class="sm:col-12 md:col-6">
+          <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+        </div>
+        <div class="sm:col-12 md:col-6">
+          <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+        </div>
+        <div class="sm:col-12 md:col-6">
+          <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+        </div>
+        <div class="sm:col-12 md:col-6">
+          <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+        </div>
+        <div class="sm:col-12 md:col-6">
+          <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+        </div>
+        <div class="sm:col-12 md:col-6">
+          <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+        </div>
+        <div class="sm:col-12 md:col-6">
+          <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+        </div>
+        <div class="sm:col-12 md:col-6">
+          <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+        </div>
+        <div class="sm:col-12">
+          <p-skeleton height="4rem" styleClass="mb-2"></p-skeleton>
+        </div>
+      </div>
+    </div>
+    <div class="sm:col-6">
+      <div class="grid">
+        <div class="sm:col-12 md:col-6">
+          <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+        </div>
+        <div class="sm:col-12 md:col-6">
+          <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+        </div>
+        <div class="sm:col-12 md:col-6">
+          <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+        </div>
+        <div class="sm:col-12 md:col-6">
+          <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+        </div>
+        <div class="sm:col-12 md:col-6">
+          <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+        </div>
+        <div class="sm:col-12 md:col-6">
+          <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+        </div>
+        <div class="sm:col-12 md:col-6">
+          <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+        </div>
+        <div class="sm:col-12 md:col-6">
+          <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+        </div>
+        <div class="sm:col-12 md:col-6">
+          <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+        </div>
+        <div class="sm:col-12 md:col-6">
+          <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+        </div>
+        <div class="sm:col-12 md:col-6">
+          <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+        </div>
+        <div class="sm:col-12 md:col-6">
+          <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+        </div>
+        <div class="sm:col-12">
+          <p-skeleton height="4rem" styleClass="mb-2"></p-skeleton>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="grid" *ngIf="!isShowSkeleton">
+    <div class="container-fluid mt-4 px-5">
+      <div class="row">
+        <div class="col-lg-12 col-sm-12 px-0">
+          <div class="card custom-card mb-4">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Trạng thái</p>
+                </div>
+                <div class="col-sm-9">
+                  <p-tag
+                    *ngIf="team.status === 0"
+                    icon="pi pi-times"
+                    severity="default"
+                    value="Không hoạt động"
+                    [rounded]="true"
+                  ></p-tag>
+                  <p-tag
+                    *ngIf="team.status === 1"
+                    icon="pi pi-check"
+                    severity="success"
+                    value="Hoạt động"
+                    [rounded]="true"
+                  ></p-tag>
+                </div>
+              </div>
+              <hr />
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Mã</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">{{ team.id }}</p>
+                </div>
+              </div>
+              <hr />
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Tên nhóm</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">{{ team.name }}</p>
+                </div>
+              </div>
+              <hr />
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Người quản lý</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">
+                    <a
+                      href="javascript:void(0);"
+                      class="ml-2 pe-none"
+                      (click)="openAreaManagerDetail()"
+                      >{{
+                        team.areaManagerTeams[team.areaManagerTeams.length - 1]
+                          .areaManager.name
+                      }}
+                    </a>
+                  </p>
+                </div>
+              </div>
+              <hr />
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Mô tả</p>
+                </div>
+                <div class="col-sm-9">
+                  <dx-html-editor
+                    valueType="html"
+                    [(value)]="team.description"
+                    [readOnly]="true"
+                    class="custom-description"
+                  >
+                  </dx-html-editor>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Extend information -->
+        <div class="col-lg-3 col-md-6 my-2 pl-0">
+          <div class="card custom-card card-stats">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-5">
+                  <div class="info-icon text-center icon-color-1">
+                    <i class="tim-icons icon-shape-star mt-0"> </i>
+                  </div>
+                </div>
+                <div class="col-7">
+                  <div class="numbers">
+                    <p class="card-category">Các khu vực trong nhóm</p>
+                    <h3 class="card-title">{{ wards.length }}</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <hr />
+
+              <div class="stats" (click)="openAreaDialog()" type="button">
+                <i class="tim-icons icon-sound-wave"> </i> Xem chi tiết
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 my-2">
+          <div class="card custom-card card-stats">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-5">
+                  <div class="info-icon text-center icon-color-2">
+                    <i class="tim-icons icon-single-02 mt-0"> </i>
+                  </div>
+                </div>
+                <div class="col-7">
+                  <div class="numbers">
+                    <p class="card-category">Nhân viên môi giới trong nhóm</p>
+                    <h3 class="card-title">
+                      {{ countBroker ? countBroker : "0" }}
+                    </h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <hr />
+
+              <div class="stats" (click)="openBrokerDialog()" type="button">
+                <i class="tim-icons icon-sound-wave"> </i> Xem chi tiết
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 my-2">
+          <div class="card custom-card card-stats">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-5">
+                  <div class="info-icon text-center icon-color-3">
+                    <i class="pi pi-building mt-0"> </i>
+                  </div>
+                </div>
+                <div class="col-7">
+                  <div class="numbers">
+                    <p class="card-category">Các BĐS TM trong nhóm</p>
+                    <h3 class="card-title">{{ properties.length }}</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <hr />
+
+              <div class="stats" (click)="openPropertyDialog()" type="button">
+                <i class="tim-icons icon-sound-wave"> </i> Xem chi tiết
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 my-2 pr-0">
+          <div class="card custom-card card-stats">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-5">
+                  <div class="info-icon text-center icon-color-4">
+                    <i class="pi pi-replay mt-0"> </i>
+                  </div>
+                </div>
+                <div class="col-7">
+                  <div class="numbers">
+                    <p class="card-category history">
+                      Lịch sử quản lý của nhóm
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <hr />
+
+              <div
+                class="stats"
+                (click)="openAreaManagerDialog()"
+                type="button"
+              >
+                <i class="tim-icons icon-sound-wave"> </i> Xem chi tiết
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End-Extend information -->
+      </div>
+    </div>
+  </div>
+</p-dialog>
+
+<p-dialog
+  [(visible)]="isShowAreaDialog"
+  [style]="{ width: '60rem' }"
+  [modal]="true"
+  styleClass="p-fluid"
+  (onHide)="hideAreaDialog()"
+  [dismissableMask]="true"
+  [closable]="true"
+  [draggable]="false"
+  [baseZIndex]="1100"
+  styleClass="ward-custom"
+>
+  <div class="card">
+    <p-toolbar styleClass="mb-2">
+      <ng-template pTemplate="left">
+        <button
+          class="btn btn-primary animation-on-hover mr-2"
+          (click)="openAddAreaModal()"
+          pTooltip="Thêm quận, phường vào nhóm"
+          [disabled]="isShowSpin"
+        >
+          <i class="pi pi-plus"></i> Thêm mới
+        </button>
+        <button
+          class="btn btn-danger animation-on-hover"
+          (click)="deleteSelectedWards()"
+          [disabled]="!selectedWardsInTable || !selectedWardsInTable.length"
+          pTooltip="Loại bỏ quận, phường khỏi nhóm"
+        >
+          <i class="pi pi-trash"></i> Loại bỏ
+        </button>
+      </ng-template>
+
+      <ng-template pTemplate="right">
+        <span class="p-input-icon-left">
+          <i class="pi pi-search"></i>
+          <input
+            pInputText
+            type="text"
+            (input)="datatable.filterGlobal($event.target.value, 'contains')"
+            placeholder="Tìm kiếm"
+            pTooltip="Tìm kiếm "
+          />
+        </span>
+      </ng-template>
+    </p-toolbar>
+
+    <p-table
+      sortField="districtName"
+      sortMode="single"
+      dataKey="district.id"
+        rowGroupMode="subheader"
+  [groupRowsByOrder]="0"
+      groupRowsBy="districtName"
+      #datatable
+      [value]="wards"
+      responsiveLayout="scroll"
+      [paginator]="true"
+      rows="20"
+      [showCurrentPageReport]="true"
+      currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} mục"
+      [rowsPerPageOptions]="[20, 40]"
+      [globalFilterFields]="['id', 'name', 'districtName']"
+      [rowHover]="true"
+      styleClass="p-sticky p-datatable-striped custom-table-ward"
+      [(selection)]="selectedWardsInTable"
+      [columns]="selectedColumns"
+      [autoLayout]="true"
+    >
+      <ng-template pTemplate="caption">
+        <div class="grid highlight">
+          <div class="col-9">
+            <h2 class="p-m-0" style="font-weight: 500">
+              Các khu vực trong nhóm
+            </h2>
+          </div>
+          <div class="col-3">
+            <div class="flex justify-content-end">
+              <p-multiSelect
+                name="columns"
+                [options]="displayCols"
+                [(ngModel)]="selectedColumns"
+                [maxSelectedLabels]="0"
+                optionLabel="header"
+                selectedItemsLabel="{{
+                  cols.length === selectedColumns.length
+                    ? 'Tất cả'
+                    : 'Chọn cột hiển thị'
+                }}"
+                [style]="{ minWidth: '224px' }"
+                [scrollHeight]="240"
+                placeholder="Chọn cột hiển thị"
+              >
+              </p-multiSelect>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <ng-container *ngFor="let col of columns" [ngSwitch]="col.field">
+            <th
+              *ngSwitchCase="'cbb'"
+              [ngStyle]="{ textAlign: col.headerAlign }"
+            >
+              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+            <th
+              *ngSwitchCase="
+                col.field === 'no' || col.field === 'action' ? col.field : ''
+              "
+              [ngStyle]="{ textAlign: col.headerAlign }"
+            >
+              {{ col.header }}
+            </th>
+            <th
+              *ngSwitchDefault
+              [ngStyle]="{ textAlign: col.headerAlign }"
+              pSortableColumn="{{ col.field }}"
+            >
+              {{ col.header }}
+              <p-sortIcon field="{{ col.field }}"></p-sortIcon>
+            </th>
+          </ng-container>
+        </tr>
+      </ng-template>
+
+      <ng-template
+        pTemplate="groupheader"
+        let-ward
+        let-rowIndex="rowIndex"
+        let-expanded="expanded"
+      >
+        <tr>
+          <td [attr.colspan]="_selectedColumns.length">
+            <button
+              type="button"
+              pButton
+              pRipple
+              [pRowToggler]="ward"
+              class="p-button-text p-button-rounded p-button-plain mr-2 custom-button"
+              [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+            ></button>
+            <span class="ml-2" style="font-weight: 600">{{
+              ward.districtName
+            }}</span>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="groupfooter" let-ward>
+        <tr class="p-rowgroup-footer">
+          <td
+            [attr.colspan]="_selectedColumns.length"
+            style="text-align: right"
+          >
+            Tổng số phường: {{ calculateWardTotal(ward.districtName) }}
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template
+        pTemplate="rowexpansion"
+        let-ward
+        let-columns="columns"
+        let-i="rowIndex"
+      >
+        <tr>
+          <ng-container *ngFor="let col of columns" [ngSwitch]="col.field">
+            <td
+              *ngSwitchCase="'cbb'"
+              class="py-0"
+              [ngStyle]="{ textAlign: col.textAlign }"
+            >
+            <p-checkbox (onChange)="onSingleWardChange()"[(ngModel)]="selectedWardsInTable" name="group" [value]="ward"></p-checkbox>
+            </td>
+            <td *ngSwitchCase="'no'" [ngStyle]="{ textAlign: col.textAlign }">
+              {{ i + 1 }}
+            </td>
+            <td
+              *ngSwitchDefault
+              [attr.title]="ward[col.field]"
+              [ngStyle]="{ textAlign: col.textAlign }"
+            >
+              {{ ward[col.field] }}
+            </td>
+            <td
+              *ngSwitchCase="'action'"
+              [ngStyle]="{ textAlign: col.textAlign }"
+            >
+              <button
+                [disabled]="ward.status === 0 ? true : false"
+                class="btn btn-danger btn-round animation-on-hover btn-icon"
+                (click)="removeWard(ward)"
+                pTooltip="Loại bỏ khỏi nhóm"
+              >
+                <i class="pi pi-trash"> </i>
+              </button>
+            </td>
+          </ng-container>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td
+            [attr.colspan]="_selectedColumns.length"
+            *ngIf="isShowSpin"
+            class="text-center"
+          >
+            <p-progressSpinner
+              [style]="{ width: '50px', height: '50px' }"
+              styleClass="custom-spinner"
+              strokeWidth="8"
+              fill="#EEEEEE"
+              animationDuration=".5s"
+            ></p-progressSpinner>
+          </td>
+          <td
+            [attr.colspan]="_selectedColumns.length"
+            *ngIf="!isShowSpin"
+            class="text-center"
+          >
+            Không có khu vực được quản lý bởi nhóm.
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</p-dialog>
+<p-dialog
+  [(visible)]="isShowBrokerDialog"
+  [style]="{ width: '80rem' }"
+  [modal]="true"
+  styleClass="p-fluid"
+  (onHide)="hideBrokerDialog()"
+  [dismissableMask]="true"
+  [closable]="true"
+  [draggable]="false"
+  [baseZIndex]="1100"
+>
+  <div class="card">
+    <app-broker-list
+      (countBrokers)="getCount($event)"
+      [teamFromTeamDetail]="team"
+    ></app-broker-list>
+  </div>
+</p-dialog>
+<p-dialog
+  [(visible)]="isShowPropertyDialog"
+  [style]="{ width: '80rem' }"
+  [modal]="true"
+  styleClass="p-fluid"
+  (onHide)="hidePropertyDialog()"
+  [dismissableMask]="true"
+  [closable]="true"
+  [draggable]="false"
+  [baseZIndex]="1100"
+>
+  <div class="card">
+    <app-property-list
+      [teamFromTeamDetail]="team"
+      [propertiesOfTeam]="properties"
+    ></app-property-list>
+  </div>
+</p-dialog>
+<p-dialog
+  [(visible)]="isShowAreaManagerDialog"
+  [style]="{ width: '60rem' }"
+  header="Lịch sử quản lý của nhóm"
+  [modal]="true"
+  styleClass="p-fluid"
+  (onHide)="hideAreaManagerDialog()"
+  [dismissableMask]="true"
+  [closable]="true"
+  [draggable]="false"
+  [baseZIndex]="1100"
+>
+  <div class="card">
+<ng-container *ngIf="!isShowSkeleton">
+    <p-timeline [value]="team.areaManagerTeams">
+      <ng-template pTemplate="content" let-event>
+          <small class="p-text-secondary">{{event.startDate | date: DATE_TIME_FORMAT}}</small>
+      </ng-template>
+      <ng-template pTemplate="opposite" let-event>
+          {{event.areaManager.name}}
+      </ng-template>
+  </p-timeline>
+</ng-container>
+  </div>
+</p-dialog>
+
+<!-- Add Ward Modal -->
+<p-dialog
+  header="Thêm mới các khu vực vào nhóm"
+  [(visible)]="areaModal"
+  [modal]="true"
+  [style]="{ width: '45%', height: '38%' }"
+  [draggable]="false"
+  [resizable]="false"
+  (onHide)="hideAreaModal()"
+  [dismissableMask]="true"
+  [closable]="true"
+>
+  <div class="row p-10 mt-4">
+    <dt class="col-sm-4 my-auto">Chọn khu vực</dt>
+    <dd class="col-sm-8 my-auto">
+      <form novalidate [formGroup]="areaForm">
+        <input hidden formControlName="wards" [value]="wards">
+        <p-treeSelect
+          [(ngModel)]="selectedNodes"
+          [options]="nodes"
+          display="chip"
+          showClear
+          [metaKeySelection]="false"
+          selectionMode="checkbox"
+          placeholder="Chọn khu vực"
+          [filter]="true"
+          [filterInputAutoFocus]="true"
+          (onNodeSelect)="selectNode($event)"
+          (onNodeUnselect)="unselectNode($event)"
+          appendTo="body"
+          appInputRestriction
+          formControlName="ward"
+          [class]="displayMessage.ward ? 'ng-dirty ng-invalid' : ''"
+        ></p-treeSelect>
+        <p-message
+          severity="error"
+          *ngIf="displayMessage.ward"
+          text="{{ displayMessage.ward }}"
+        ></p-message>
+        <div style="color: red" *ngIf="isShowError">
+          Không còn khu vực chưa thuộc nhóm.
+        </div>
+      </form>
+    </dd>
+  </div>
+  <ng-template pTemplate="footer">
+    <dl class="dl-horizontal row">
+      <div class="col-md-6 text-center">
+        <button class="btn btn-danger btn-round" (click)="hideAreaModal()">
+          Huỷ bỏ
+        </button>
+      </div>
+      <div class="col-md-6 text-center">
+        <button
+          class="btn btn-primary btn-round"
+          (click)="addArea()"
+          [disabled]="!areaForm.valid"
+        >
+          Xác nhận
+        </button>
+      </div>
+    </dl>
+  </ng-template>
+</p-dialog>
+
+<ng-container *ngIf="isShowAM">
+  <app-area-manager-detail
+    (amState)="getAreaManagerState()"
+    [isFromTeamDetail]="
+      team.areaManagerTeams[this.team.areaManagerTeams.length - 1].areaManager
+        .id
+    "
+  ></app-area-manager-detail>
+</ng-container>

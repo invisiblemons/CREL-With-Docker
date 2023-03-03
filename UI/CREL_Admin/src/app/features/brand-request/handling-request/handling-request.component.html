@@ -1,0 +1,218 @@
+<p-dialog
+  [(visible)]="isShowDialog"
+  [style]="{ width: '90%', height: '90%' }"
+  header="Xử lý yêu cầu của thương hiệu"
+  [modal]="true"
+  styleClass="p-fluid"
+  (onHide)="hideDialog()"
+  [dismissableMask]="true"
+  [closable]="true"
+  [draggable]="false"
+  [autoZIndex]="false"
+>
+  <ng-template pTemplate="content">
+    <div class="grid grid-nogutter">
+      <div class="col-3">
+        <div class="grid grid-nogutter">
+          <div class="col-11">
+            <div class="card custom-card mb-0">
+              <div class="card-body custom-heading">Thông tin yêu cầu</div>
+            </div>
+            <div class="card custom-card mb-4">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <p class="mb-0">Quận/huyện</p>
+                  </div>
+                  <div class="col-sm-12 py-0">
+                    <p class="text-muted mb-0">
+                      {{ brandRequest.area ? brandRequest.area : "" }}
+                    </p>
+                  </div>
+                </div>
+                <hr />
+                <div class="row">
+                  <div class="col-sm-12">
+                    <p class="mb-0">Khoảng giá</p>
+                  </div>
+                  <div class="col-sm-12 py-0">
+                    <p class="text-muted mb-0">
+                      {{
+                        (brandRequest.minPrice / 1000000 | number: "1.0-2") +
+                          " - " +
+                          (brandRequest.maxPrice / 1000000 | number: "1.0-2") +
+                          " triệu/tháng"
+                      }}
+                    </p>
+                  </div>
+                </div>
+                <hr />
+                <div class="row">
+                  <div class="col-sm-12">
+                    <p class="mb-0">Khoảng diện tích</p>
+                  </div>
+                  <div class="col-sm-12 py-0">
+                    <p class="text-muted mb-0">
+                      {{
+                        brandRequest.minFloorArea +
+                          " - " +
+                          brandRequest.maxFloorArea +
+                          " m²"
+                      }}
+                    </p>
+                  </div>
+                </div>
+                <hr />
+                <div class="row">
+                  <div class="col-sm-12">
+                    <p class="mb-0">Số mặt tiền</p>
+                  </div>
+                  <div class="col-sm-12 py-0">
+                    <p class="text-muted mb-0">
+                      {{ brandRequest.amountFrontage }}
+                    </p>
+                  </div>
+                </div>
+                <hr />
+                <div class="row">
+                  <div class="col-sm-12">
+                    <p class="mb-0">Mô tả</p>
+                  </div>
+                  <div class="col-sm-12 py-0">
+                    <dx-html-editor
+                      valueType="html"
+                      [(value)]="brandRequest.description"
+                      [readOnly]="true"
+                      class="custom-description"
+                    >
+                    </dx-html-editor>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-1">
+            <p-divider layout="vertical"></p-divider>
+          </div>
+        </div>
+      </div>
+      <div class="col-9">
+        <div class="grid grid-nogutter mb-5">
+          <div class="col-sm-10 ml-8">
+            <dx-drop-down-box
+              [(value)]="propertyGridBoxValue"
+              [(opened)]="isPropertyGridBoxOpened"
+              valueExpr="id"
+              [deferRendering]="false"
+              [displayExpr]="propertyGridBox_displayExpr"
+              placeholder="Tìm kiếm bất động sản..."
+              [showClearButton]="true"
+              [dataSource]="propertyGridDataSource"
+              (onOptionChanged)="onPropertyGridBoxOptionChanged($event)"
+            >
+              <div *dxTemplate="let data of 'content'">
+                <dx-data-grid
+                  [dataSource]="propertyGridDataSource"
+                  [columns]="propertyGridColumns"
+                  [hoverStateEnabled]="true"
+                  [(selectedRowKeys)]="propertyGridBoxValue"
+                  height="100%"
+                >
+                  <dxo-selection mode="single"></dxo-selection>
+                  <dxo-filter-row
+                    [visible]="true"
+                    [betweenEndText]="'Kết thúc'"
+                    [betweenStartText]="'Bắt đầu'"
+                    [resetOperationText]="'Khôi phục'"
+                    [operationDescriptions]="{
+                      equal: 'Bằng',
+                      notEqual: 'Không bằng',
+                      lessThan: 'Nhỏ hơn',
+                      greaterThan: 'Lớn hơn',
+                      lessThanOrEqual: 'Nhỏ hơn hoặc bằng',
+                      greaterThanOrEqual: 'Lớn hơn hoặc bằng',
+                      between: 'Nằm trong khoảng'
+                    }"
+                  >
+                  </dxo-filter-row>
+                  <dxo-scrolling mode="virtual"></dxo-scrolling>
+                  <dxo-paging [enabled]="true" [pageSize]="10"></dxo-paging>
+                </dx-data-grid>
+              </div>
+            </dx-drop-down-box>
+          </div>
+        </div>
+        <div class="grid">
+          <ng-container *ngIf="isShowSkeleton">
+            <p-skeleton width="100%" styleClass="mb-2"></p-skeleton>
+            <p-skeleton width="100%" styleClass="mb-4"></p-skeleton>
+          </ng-container>
+          <ng-container *ngIf="!isShowSkeleton">
+            <p-pickList
+              [source]="properties"
+              [target]="selectedProperties"
+              sourceHeader="Danh sách bất động sản có thể đề xuất"
+              targetHeader="Danh sách bất động sản được chọn để đề xuất"
+              [dragdrop]="true"
+              [responsive]="true"
+              [sourceStyle]="{ height: '100%', width: '100%' }"
+              [targetStyle]="{ height: '100%', width: '100%' }"
+              [style]="{ height: '49vh', width: '66vw', padding: '0 1rem' }"
+              styleClass="custom-picklist"
+              [showSourceControls]="false"
+              [showTargetControls]="false"
+            >
+              <ng-template let-property pTemplate="item">
+                <div class="property-item" [id]="property.id">
+                  <div class="image-container">
+                    <img
+                      [src]="
+                        property.mainImage
+                          ? property.mainImage.link
+                          : IMAGE_DEFAULT
+                      "
+                      [alt]="property.name"
+                      class="property-image"
+                    />
+                  </div>
+                  <div class="property-list-detail">
+                    <div class="mb-2">
+                      <strong>{{ property.name ? property.name : "" }}</strong>
+                    </div>
+                    <div class="text-muted">
+                      <i class="mr -2 pi pi-map-marker"></i>
+                      {{ property.addressFull ? property.addressFull : "" }}
+                    </div>
+                  </div>
+                  <div class="product-list-action">
+                    <button
+                      class="btn btn-primary btn-round btn-icon animation-on-hover mr-2"
+                      (click)="openDetailProperty(property)"
+                      pTooltip="Xem chi tiết"
+                    >
+                      <i class="pi pi-eye"> </i>
+                    </button>
+                  </div>
+                </div>
+              </ng-template>
+            </p-pickList>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      label="Đề xuất"
+      icon="pi pi-chevron-circle-right"
+      type="submit"
+      [loading]="loading"
+      [disabled]="selectedProperties.length === 0"
+      (onClick)="suggestProperty()"
+      class="custom-button"
+      [pTooltip]="'Đề xuất bất động sản để xử lý yêu cầu từ thương hiệu'"
+    ></p-button>
+  </ng-template>
+</p-dialog>
+<router-outlet></router-outlet>

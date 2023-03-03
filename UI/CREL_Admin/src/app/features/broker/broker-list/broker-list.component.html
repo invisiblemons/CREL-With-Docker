@@ -1,0 +1,407 @@
+<p-toolbar styleClass="mb-2">
+  <ng-template pTemplate="left">
+    <ng-container *ngIf="isLoadActionOfTeamDetail">
+      <button
+        class="btn btn-primary animation-on-hover mr-2"
+        (click)="openAddBrokerOfTeamDetail()"
+        pTooltip="Thêm người nhân viên môi giới vào nhóm"
+        [disabled]="isShowSpin"
+      >
+        <i class="pi pi-plus"></i> Thêm mới
+      </button>
+      <button
+        class="btn btn-danger animation-on-hover"
+        (click)="removeSelectedBrokersOfTeamDetail()"
+        [disabled]="!selectedBrokers || !selectedBrokers.length"
+        pTooltip="Loại bỏ người nhân viên môi giới khỏi nhóm"
+      >
+        <i class="pi pi-trash"></i> Loại bỏ
+      </button>
+    </ng-container>
+    <ng-container *ngIf="!isLoadActionOfTeamDetail">
+      <button
+        class="btn btn-primary animation-on-hover mr-2"
+        (click)="openNewBroker()"
+        pTooltip="Thêm mới một đối tượng"
+        [disabled]="isShowSpin"
+      >
+        <i class="pi pi-plus"></i> Thêm mới
+      </button>
+      <button
+        class="btn btn-danger animation-on-hover"
+        (click)="deleteSelectedBrokers()"
+        [disabled]="!selectedBrokers || !selectedBrokers.length"
+        pTooltip="Xoá các đối tượng đã chọn"
+      >
+        <i class="pi pi-trash"></i> Xoá
+      </button>
+    </ng-container>
+  </ng-template>
+
+  <ng-template pTemplate="right">
+    <span class="p-input-icon-left">
+      <i class="pi pi-search"></i>
+      <input
+        pInputText
+        type="text"
+        (input)="datatable.filterGlobal($event.target.value, 'contains')"
+        placeholder="Tìm kiếm "
+        pTooltip="Tìm kiếm "
+      />
+    </span>
+  </ng-template>
+</p-toolbar>
+
+<p-table
+  [resizableColumns]="true"
+  [responsive]="true"
+  #datatable
+  [value]="brokers"
+  responsiveLayout="scroll"
+  [paginator]="true"
+  [rows]="TABLE_CONFIG.ROWS"
+  [showCurrentPageReport]="true"
+  currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} mục"
+  [rowsPerPageOptions]="TABLE_CONFIG.ROWS_PER_PAGE"
+  [globalFilterFields]="[
+    'name',
+    'userName',
+    'registrationNumber',
+    'email',
+    'teamName',
+    'phoneNumber'
+  ]"
+  [rowHover]="true"
+  styleClass="p-sticky p-datatable-striped"
+  [(selection)]="selectedBrokers"
+  [columns]="selectedColumns"
+  [autoLayout]="true"
+>
+  <ng-template pTemplate="caption">
+    <div class="grid highlight">
+      <div class="col-9 flex align-items-center">
+        <h3 class="p-m-0 mb-0" style="font-weight: 600">
+          {{ tableTitle }}
+        </h3>
+      </div>
+      <div class="col-3">
+        <div class="flex justify-content-end">
+          <p-multiSelect
+            name="columns"
+            [options]="displayCols"
+            [(ngModel)]="selectedColumns"
+            [maxSelectedLabels]="0"
+            optionLabel="header"
+            selectedItemsLabel="{{
+              cols.length === selectedColumns.length
+                ? 'Tất cả'
+                : 'Chọn cột hiển thị'
+            }}"
+            [style]="{ minWidth: '224px' }"
+            [scrollHeight]="220"
+            placeholder="Chọn cột hiển thị"
+          >
+          </p-multiSelect>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <ng-container *ngFor="let col of columns" [ngSwitch]="col.field">
+        <th *ngSwitchCase="'cbb'" [ngStyle]="{ textAlign: col.headerAlign }">
+          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+        </th>
+        <th
+          *ngSwitchCase="
+            col.field === 'no' || col.field === 'action' ? col.field : ''
+          "
+          [ngStyle]="{ textAlign: col.headerAlign }"
+        >
+          {{ col.header }}
+        </th>
+        <th
+          *ngSwitchDefault
+          [ngStyle]="{ textAlign: col.headerAlign }"
+          pSortableColumn="{{ col.field }}"
+        >
+          {{ col.header }} <p-sortIcon field="{{ col.field }}"></p-sortIcon>
+        </th>
+        <th *ngSwitchCase="'status'" [ngStyle]="{ textAlign: col.headerAlign }">
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Trạng thái
+            <p-columnFilter
+              field="status"
+              matchMode="equals"
+              [display]="'menu'"
+              [showAddButton]="false"
+              [showMatchModes]="false"
+              [showOperator]="false"
+              [showClearButton]="false"
+              [showApplyButton]="false"
+            >
+              <ng-template
+                pTemplate="filter"
+                let-value
+                let-filter="filterCallback"
+              >
+                <p-dropdown
+                  emptyMessage="Danh sách trống"
+                  [ngModel]="value"
+                  [options]="statuses"
+                  (onChange)="filterStatus($event.value)"
+                  placeholder="Chọn trạng thái"
+                  [showClear]="true"
+                >
+                  <ng-template let-option pTemplate="item">
+                    <p-tag
+                      *ngIf="option.value === 0"
+                      icon="pi pi-trash"
+                      severity="danger"
+                      value="{{ option.label }}"
+                      [rounded]="true"
+                    ></p-tag>
+                    <p-tag
+                      *ngIf="option.value === 1"
+                      icon="pi pi-check"
+                      severity="success"
+                      value="{{ option.label }}"
+                      [rounded]="true"
+                    ></p-tag>
+                  </ng-template>
+                </p-dropdown>
+              </ng-template>
+            </p-columnFilter>
+          </div>
+        </th>
+      </ng-container>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="colgroup" let-columns>
+    <colgroup>
+      <col
+        *ngFor="let col of columns"
+        [ngStyle]="{ width: col.width || 'auto' }"
+      />
+    </colgroup>
+  </ng-template>
+
+  <ng-template
+    pTemplate="body"
+    let-broker
+    let-columns="columns"
+    let-i="rowIndex"
+  >
+    <tr>
+      <ng-container *ngFor="let col of columns" [ngSwitch]="col.field">
+        <td
+          *ngSwitchCase="'cbb'"
+          class="py-0"
+          [ngStyle]="{ textAlign: col.textAlign }"
+        >
+          <p-tableCheckbox
+            [value]="broker"
+            [disabled]="
+              broker.status === 0 ||
+              broker.isHasAppointment ||
+              broker.isHasPropery
+                ? true
+                : false
+            "
+          ></p-tableCheckbox>
+        </td>
+        <td *ngSwitchCase="'no'" [ngStyle]="{ textAlign: col.textAlign }">
+          {{ i + 1 }}
+        </td>
+        <td
+          *ngSwitchDefault
+          [attr.title]="broker[col.field]"
+          [ngStyle]="{ textAlign: col.textAlign }"
+        >
+          {{ broker[col.field] }}
+        </td>
+        <td
+          *ngSwitchCase="'phoneNumber'"
+          [ngStyle]="{ textAlign: col.textAlign }"
+        >
+          {{ broker.phoneNumber | slice: 0:4 }}
+          {{ broker.phoneNumber | slice: 4:7 }}
+          {{ broker.phoneNumber | slice: 7:10 }}
+        </td>
+        <td *ngSwitchCase="'gender'" [ngStyle]="{ textAlign: col.textAlign }">
+          <ng-container *ngIf="broker.gender">Nam</ng-container>
+          <ng-container *ngIf="!broker.gender">Nữ</ng-container>
+        </td>
+        <td *ngSwitchCase="'status'" [ngStyle]="{ textAlign: col.textAlign }">
+          <p-tag
+            *ngIf="broker.status === 0"
+            icon="pi pi-trash"
+            severity="danger"
+            value="{{ statuses[0].label }}"
+            [rounded]="true"
+          ></p-tag>
+          <p-tag
+            *ngIf="broker.status === 1 || broker.status === 2"
+            icon="pi pi-check"
+            severity="success"
+            [value]="broker.teamId ? statuses[1].label : 'Chưa có nhóm'"
+            [rounded]="true"
+          ></p-tag>
+        </td>
+        <td *ngSwitchCase="'action'" [ngStyle]="{ textAlign: col.textAlign }">
+          <ng-container *ngIf="isLoadActionOfTeamDetail">
+            <button
+              [disabled]="
+                broker.status === 0 ||
+                broker.isHasAppointment ||
+                broker.isHasPropery
+                  ? true
+                  : false
+              "
+              class="btn btn-danger btn-round animation-on-hover btn-icon"
+              (click)="removeBrokerOfTeamDetail(broker)"
+              pTooltip="Loại bỏ"
+            >
+              <i class="pi pi-trash"> </i>
+            </button>
+          </ng-container>
+          <ng-container *ngIf="!isLoadActionOfTeamDetail">
+            <button
+              class="btn btn-primary btn-round btn-icon animation-on-hover mr-2"
+              (click)="openDetailBroker(broker)"
+              pTooltip="Xem chi tiết"
+            >
+              <i class="pi pi-eye"> </i>
+            </button>
+            <button
+              class="btn btn-success btn-round btn-icon animation-on-hover mr-2"
+              (click)="openEditBroker(broker)"
+              pTooltip="Chỉnh sửa"
+            >
+              <i class="pi pi-pencil"> </i>
+            </button>
+            <button
+              [disabled]="
+                broker.status === 0 ||
+                broker.isHasAppointment ||
+                broker.isHasPropery
+                  ? true
+                  : false
+              "
+              class="btn btn-danger btn-round animation-on-hover btn-icon"
+              (click)="deleteBroker(broker)"
+              pTooltip="Xoá"
+            >
+              <i class="pi pi-trash"> </i>
+            </button>
+          </ng-container>
+        </td>
+      </ng-container>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td
+        [attr.colspan]="_selectedColumns.length"
+        *ngIf="isShowSpin"
+        class="text-center"
+      >
+        <p-progressSpinner
+          [style]="{ width: '50px', height: '50px' }"
+          styleClass="custom-spinner"
+          strokeWidth="8"
+          fill="#EEEEEE"
+          animationDuration=".5s"
+        ></p-progressSpinner>
+      </td>
+      <td
+        [attr.colspan]="_selectedColumns.length"
+        *ngIf="!isShowSpin"
+        class="text-center"
+      >
+        Không có người nhân viên môi giới.
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<router-outlet></router-outlet>
+
+<!-- Add Ward Modal -->
+<p-dialog
+  header="Thêm mới người nhân viên môi giới vào nhóm"
+  [(visible)]="brokerModal"
+  [modal]="true"
+  [style]="{ width: '58%', height: '50%' }"
+  [draggable]="false"
+  [resizable]="false"
+  (onHide)="hideBrokerModal()"
+>
+  <div class="row p-10 mt-4">
+    <dt class="col-sm-4 my-auto">
+      <label for="broker"
+        >Chọn người nhân viên môi giới<span class="required">*</span>
+      </label>
+    </dt>
+    <dd class="col-sm-8 my-auto">
+      <form novalidate [formGroup]="brokerForm">
+        <dx-drop-down-box
+          [(value)]="brokerGridBoxValue"
+          [(opened)]="isBrokerGridBoxOpened"
+          valueExpr="id"
+          [deferRendering]="false"
+          [displayExpr]="brokerGridBox_displayExpr"
+          placeholder="Chọn người nhân viên môi giới"
+          [showClearButton]="true"
+          [dataSource]="brokerGridDataSource"
+          (onOptionChanged)="onBrokerGridBoxOptionChanged($event)"
+          appInputRestriction
+          formControlName="broker"
+          [class]="displayMessage.broker ? 'ng-dirty ng-invalid' : ''"
+        >
+          <div *dxTemplate="let data of 'content'">
+            <dx-data-grid
+              [dataSource]="brokerGridDataSource"
+              [columns]="brokerGridColumns"
+              [selection]="{ mode: 'multiple' }"
+              [hoverStateEnabled]="true"
+              [paging]="{ enabled: true, pageSize: 30 }"
+              [filterRow]="{ visible: true }"
+              [scrolling]="{ mode: 'virtual' }"
+              [(selectedRowKeys)]="brokerGridBoxValue"
+            >
+            </dx-data-grid>
+          </div>
+        </dx-drop-down-box>
+
+        <p-message
+          severity="error"
+          *ngIf="displayMessage.broker"
+          text="{{ displayMessage.broker }}"
+        ></p-message>
+        <div style="color: red" *ngIf="isShowError">
+          Tất cả nhân viên môi giới đều đã có nhóm.
+        </div>
+      </form>
+    </dd>
+  </div>
+  <ng-template pTemplate="footer">
+    <dl class="dl-horizontal row">
+      <div class="col-md-6 text-center">
+        <button class="btn btn-danger btn-round" (click)="hideBrokerModal()">
+          Huỷ bỏ
+        </button>
+      </div>
+      <div class="col-md-6 text-center">
+        <button
+          class="btn btn-primary btn-round"
+          (click)="addBrokerIntoTeam()"
+          [disabled]="!brokerForm.valid"
+        >
+          Xác nhận
+        </button>
+      </div>
+    </dl>
+  </ng-template>
+</p-dialog>

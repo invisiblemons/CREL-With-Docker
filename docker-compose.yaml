@@ -1,0 +1,76 @@
+version: "3.9"
+
+services:
+  # SQL Server container
+  mssql:
+    build:
+      context: ./SQL
+      dockerfile: Dockerfile
+    container_name: mssql
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: 12341234Minh@
+    ports:
+      - "1433:1433"
+      - "1434:1434/udp"
+    networks:
+      - shared_network  
+    restart: always
+
+  # .NET Core Web 6 container
+  crel-be:
+    build:
+      context: ./API
+      dockerfile: Dockerfile
+    container_name: crel-be
+    ports:
+      - "5148:5148"
+    networks:
+      - shared_network
+    restart: always
+    depends_on:
+      - mssql
+    environment:
+      ASPNETCORE_URLS: "http://+:5148"
+      ConnectionStrings__Default: "Server=mssql;Database=CRELDB;User Id=sa;Password=12341234Minh@"
+
+  # Angular 13 container
+  crel-admin:
+    build:
+      context: ./UI/CREL_Admin
+      dockerfile: Dockerfile
+    container_name: crel-admin
+    ports:
+      - "4200:80"
+    networks:
+      - shared_network
+    restart: always
+    depends_on:
+      - crel-be
+  crel-am:
+    build:
+      context: ./UI/CREL_AM
+      dockerfile: Dockerfile
+    container_name: crel-am
+    ports:
+      - "4201:80"
+    networks:
+      - shared_network
+    restart: always
+    depends_on:
+      - crel-be
+  crel-brand:
+    build:
+      context: ./UI/CREL_Brand
+      dockerfile: Dockerfile
+    container_name: crel-brand
+    ports:
+      - "4202:80"
+    networks:
+      - shared_network
+    restart: always
+    depends_on:
+      - crel-be
+      
+networks:
+  shared_network:

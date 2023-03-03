@@ -1,0 +1,118 @@
+<p-dialog
+  header="Chi tiết thông tin dự án bất động sản thương mại"
+  [(visible)]="isShowDialog"
+  [style]="{ width: '50vw' }"
+  [modal]="true"
+  styleClass="p-fluid"
+  (onHide)="hideDialog()"
+  [dismissableMask]="true"
+  [closable]="true"
+  [draggable]="false"
+  [baseZIndex]="1100"
+>
+  <div class="grid" *ngIf="isShowSkeleton">
+    <div class="sm:col-12 md:col-6">
+      <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+    </div>
+    <div class="sm:col-12 md:col-6">
+      <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+    </div>
+    <div class="sm:col-12 md:col-6">
+      <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+    </div>
+    <div class="sm:col-12 md:col-6">
+      <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+    </div>
+    <div class="sm:col-12 md:col-6">
+      <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+    </div>
+    <div class="sm:col-12 md:col-6">
+      <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+    </div>
+    <div class="sm:col-12">
+      <p-skeleton height="4rem" styleClass="mb-2"></p-skeleton>
+    </div>
+  </div>
+  <div class="grid" *ngIf="!isShowSkeleton">
+    <div class="sm:col-12">
+      <div class="card custom-card mb-4">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-3">
+              <p class="mb-0">Trạng thái</p>
+            </div>
+            <div class="col-sm-9">
+              <p-tag
+                *ngIf="project.status === 0"
+                icon="pi pi-trash"
+                severity="danger"
+                value="Đã xoá"
+                [rounded]="true"
+              ></p-tag>
+              <p-tag
+                *ngIf="project.status === 1"
+                icon="pi pi-check"
+                severity="success"
+                value="Hoạt động"
+                [rounded]="true"
+              ></p-tag>
+            </div>
+          </div>
+          <hr />
+          <div class="row">
+            <div class="col-sm-3">
+              <p class="mb-0">Tên dự án</p>
+            </div>
+            <div class="col-sm-9">
+              <p class="text-muted mb-0">{{ project.name }}</p>
+            </div>
+          </div>
+          <hr />
+          <div class="row">
+            <div class="col-sm-3">
+              <p class="mb-0">Tên chủ đầu tư</p>
+            </div>
+            <div class="col-sm-9">
+              <p class="text-muted mb-0">{{ project.company }}</p>
+            </div>
+          </div>
+          <hr />
+          <div class="row">
+            <div class="col-sm-3">
+              <p class="mb-0">Quận/Huyện</p>
+            </div>
+            <div class="col-sm-9">
+              <p class="text-muted mb-0">{{ project.districtName }}</p>
+            </div>
+          </div>
+          <hr />
+          <div class="row">
+            <div class="col-sm-3">
+              <p class="mb-0">Năm bàn giao</p>
+            </div>
+            <div class="col-sm-9">
+              <p class="text-muted mb-0">
+                {{ project.handoverYear | date: "yyyy" }}
+              </p>
+            </div>
+          </div>
+          <hr />
+          <div class="row">
+            <div class="col-sm-3">
+              <p class="mb-0">Mô tả</p>
+            </div>
+            <div class="col-sm-9">
+              <dx-html-editor
+                valueType="html"
+                [(value)]="project.description"
+                [readOnly]="true"
+                class="custom-description"
+              >
+              </dx-html-editor>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</p-dialog>

@@ -1,0 +1,211 @@
+:host ::ng-deep .dialog-custom {
+  background: #F5F6FA;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+  box-sizing: border-box;
+  width: 100%;
+
+  .p-dialog-header {
+    background: transparent;
+  }
+  
+  .p-dialog-content {
+    background: transparent;
+  }
+
+  .p-dialog-footer {
+    background: transparent;
+  }
+}
+
+:host ::ng-deep .p-dialog-content {
+  height: 100%;
+  padding: 0 1.5rem 0rem 1.5rem;
+}
+
+
+.card:not(.card-white) {
+  background: white;
+}
+
+.card {
+  border: 3px solid #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgb(0 0 0 / 20%) !important;
+}
+
+.skeleton {
+  height: 100vh !important;
+}
+.wrapper {
+  .image {
+    width: 100%;
+  }
+}
+:host ::ng-deep {
+  .p-dialog-mask {
+    height: unset !important;
+  }
+  .p-image-mask {
+    width: 100vw;
+    margin-left: -33.3%;
+  }
+  .p-image-preview-container > img {
+    width: 100%;
+  }
+  .p-image-preview {
+    max-height: 80vh;
+  }
+  .p-dialog-content {
+    overflow-y: auto;
+    min-height: 100vh;
+    padding: 0 !important;
+  }
+
+  .p-tabmenu-nav a {
+    padding: 0.3rem !important;
+    justify-content: center;
+    width: 9rem;
+  }
+  .p-tabmenu .p-tabmenu-nav {
+    height: 2.8rem;
+  }
+  .p-button.p-button-text {
+    color: #0857a0;
+  }
+}
+
+.dialog {
+  position: absolute;
+  flex-direction: row;
+  width: 100%;
+  display: flex;
+  min-height: 91%;
+
+  .left-dialog {
+    flex: 1 1 0%;
+    overflow-y: scroll;
+    height: 91vh;
+  }
+  .right-dialog {
+    flex-basis: auto;
+    display: flex;
+    flex-direction: column;
+    width: 63vh;
+    height: 93vh;
+    .header {
+      width: 100%;
+      display: flex;
+      flex-direction: row-reverse;
+    }
+    .main {
+      .info-main {
+        padding: 8px 16px 0px;
+        margin-bottom: 8px;
+      }
+      .bottom-main {
+        margin: 8px 16px 12px;
+        display: grid;
+        gap: 8px;
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    .body {
+      position: relative;
+      overflow-y: scroll;
+      height: 100%;
+      display: block;
+    }
+    .detail-content {
+      position: relative;
+      background: white;
+      border-top: 1px solid rgb(209, 209, 213);
+      border-bottom: 1px solid rgb(209, 209, 213);
+      padding: 0 !important;
+      nav {
+        overflow: auto hidden;
+        display: flex;
+        &::-webkit-scrollbar {
+          display: none;
+        }
+        ul {
+          padding: 0 1rem !important;
+          display: flex;
+          margin-bottom: 0 !important;
+          li {
+            flex-shrink: 0;
+            list-style: none;
+            display: block;
+            flex-shrink: 0;
+            padding: 16px 8px;
+            color: rgb(42, 42, 51);
+            background: 0 0;
+            cursor: pointer;
+            &.active {
+              color: #2576bb;
+              border-bottom: 3px solid #2576bb;
+              font-weight: 600;
+            }
+          }
+        }
+      }
+    }
+    .content-body {
+      position: relative;
+      overflow-y: scroll;
+      height: 100%;
+      div {
+        padding: 0 0.5rem;
+      }
+    }
+  }
+}
+
+//nav menu scrollable
+.navbar-nav li {
+  display: inline-block;
+}
+.scroll {
+  white-space: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+//button request cart + appointment
+.btn-default {
+  padding: 0.625rem 1.25rem;
+}
+.active a .nav-link-inner--text {
+  border-bottom: solid 3px #2576bb;
+  color: #2576bb;
+}
+.btn-default {
+  background-color: #0857a0;
+  &:hover {
+    background-color: #074783;
+    transform: none;
+    border-width: 1px !important;
+  }
+}
+
+.btn-outline-default {
+  color: #0857a0;
+  &:hover {
+    color: white;
+    transform: none;
+  }
+}
+
+::ng-deep {
+  .custom-description {
+    border: none;
+    border-style: unset !important;
+  }
+  .dx-htmleditor-content {
+    padding: 0;
+  }
+}

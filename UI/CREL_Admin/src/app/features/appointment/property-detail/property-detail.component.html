@@ -1,0 +1,322 @@
+<p-dialog
+  header="Chi tiết thông tin bất động sản thương mại"
+  [(visible)]="isShowDialog"
+  [style]="{ width: '60vw' }"
+  [modal]="true"
+  styleClass="p-fluid"
+  (onHide)="hideDialog()"
+  [dismissableMask]="true"
+  [closable]="true"
+  [draggable]="false"
+  [baseZIndex]="1100"
+>
+  <div class="grid" *ngIf="isShowSkeleton">
+    <div class="sm:col-12 skeleton">
+      <div class="flex align-items-center justify-content-center h-100">
+        <p-progressSpinner
+          [style]="{ width: '50px', height: '50px' }"
+          styleClass="custom-spinner"
+          strokeWidth="8"
+          fill="#EEEEEE"
+          animationDuration=".5s"
+        ></p-progressSpinner>
+      </div>
+    </div>
+  </div>
+  <div class="dialog" *ngIf="!isShowSkeleton">
+    <div class="left-dialog">
+      <div class="grid grid-nogutter">
+        <ng-container
+          *ngIf="
+            property.media != null && property.media.length > 0;
+            else other
+          "
+        >
+          <div
+            class="sm:col-12 wrapper h-100"
+            *ngFor="let media of property.media"
+          >
+            <p-image
+              [src]="media.link"
+              alt="Ảnh mặt bằng"
+              styleClass="image"
+              [preview]="true"
+            ></p-image>
+          </div>
+        </ng-container>
+        <ng-template #other>
+          <div class="sm:col-12 wrapper">
+            <p-image
+              src="assets/img/bg-placeholder.png"
+              alt="Ảnh mặt bằng"
+              styleClass="image"
+              [preview]="true"
+            ></p-image>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+    <div class="right-dialog">
+      <div class="main">
+        <div class="info-main">
+          <div class="flex justify-content-start">
+            <div class="flex align-items-center justify-content-center">
+              <h3 class="font-weight-bold">
+                {{ property.price / 1000000 | number: "1.0-2" }} triệu/tháng
+              </h3>
+            </div>
+          </div>
+          <div class="address-container">
+            <figcaption class="blockquote-footer">
+              {{ property.location.addressName }}
+            </figcaption>
+          </div>
+          <div class="my-4">
+            <p class="font-weight-light">
+              Ngày tạo: {{ property.lastUpdateDate | date: "dd-MM-yyyy" }}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="detail-content">
+        <nav>
+          <ul>
+            <li
+              scrollSpyMenu="detail-body-1"
+              [ssmCurrentContent]="currentMenuId"
+            >
+              Tổng quan
+            </li>
+            <li
+              scrollSpyMenu="detail-body-2"
+              [ssmCurrentContent]="currentMenuId"
+            >
+              Nổi bật
+            </li>
+            <li
+              scrollSpyMenu="detail-body-3"
+              [ssmCurrentContent]="currentMenuId"
+            >
+              Chính sách
+            </li>
+            <li
+              *ngIf="property.project"
+              scrollSpyMenu="detail-body-4"
+              [ssmCurrentContent]="currentMenuId"
+            >
+              Tiện ích
+            </li>
+            <li
+              scrollSpyMenu="detail-body-5"
+              [ssmCurrentContent]="currentMenuId"
+            >
+              Dự án
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <div
+        class="content-body"
+        scrollSpyContent="DIV"
+        [(sscCurrentContent)]="currentMenuId"
+      >
+        <div class="mt-4 mb-3" id="detail-body-1">
+          <p-fieldset [toggleable]="true" legend="Mô tả tổng quan">
+            <dx-html-editor
+              valueType="html"
+              [(value)]="property.description"
+              [readOnly]="true"
+              class="custom-description"
+            >
+            </dx-html-editor>
+          </p-fieldset>
+        </div>
+        <div class="mt-2 mb-3" id="detail-body-2">
+          <p-fieldset [toggleable]="true" legend="Thông tin nổi bật">
+            <div class="row">
+              <div class="col-6">
+                <div class="row mb-4">
+                  <div class="col-12 heading-content">Số mặt tiền</div>
+                  <div class="col-12">
+                    {{ property.numberOfFrontage }}
+                  </div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="row mb-4">
+                  <div class="col-12 heading-content">Hướng</div>
+                  <div class="col-12">
+                    {{ selectedDirection ? selectedDirection.label : "" }}
+                  </div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="row mb-4">
+                  <div class="col-12 heading-content">Diện tích sàn</div>
+                  <div class="col-12">
+                    {{
+                      (property.floorArea ? property.floorArea : 0)
+                        | number: "1.0-2"
+                    }}
+                    m²
+                  </div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="row mb-4">
+                  <div class="col-12 heading-content">Mặt tiền</div>
+                  <div class="col-12">
+                    {{
+                      (property.frontage ? property.frontage : 0)
+                        | number: "1.0-2"
+                    }}
+                    m
+                  </div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="row mb-4">
+                  <div class="col-12 heading-content">Chiều rộng</div>
+                  <div class="col-12">
+                    {{
+                      (property.horizontal ? property.horizontal : 0)
+                        | number: "1.0-2"
+                    }}
+                    m
+                  </div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="row mb-4">
+                  <div class="col-12 heading-content">Chiều dài</div>
+                  <div class="col-12">
+                    {{
+                      (property.vertical ? property.vertical : 0)
+                        | number: "1.0-2"
+                    }}
+                    m
+                  </div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="row">
+                  <div class="col-12 heading-content">Lộ giới</div>
+                  <div class="col-12">
+                    {{
+                      (property.roadWidth ? property.roadWidth : 0)
+                        | number: "1.0-2"
+                    }}
+                    m
+                  </div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="row">
+                  <div class="col-12 heading-content">Vị trí tầng</div>
+                  <div class="col-12">
+                    {{ property.floor ? property.floor : "" }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </p-fieldset>
+        </div>
+
+        <div class="mt-2 mb-3" id="detail-body-3">
+          <p-fieldset [toggleable]="true" legend="Chính sách">
+            <div class="row">
+              <div class="col-12">
+                <div class="row mb-4">
+                  <div class="col-12 heading-content">Điều kiện thuê</div>
+                  <div class="col-12">
+                    {{
+                      property.rentalCondition ? property.rentalCondition : ""
+                    }}
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="row mb-4">
+                  <div class="col-12 heading-content">Thời hạn thuê</div>
+                  <div class="col-12">
+                    {{ property.rentalTerm ? property.rentalTerm : "" }}
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="row mb-4">
+                  <div class="col-12 heading-content">Thời hạn đặt cọc</div>
+                  <div class="col-12">
+                    {{ property.depositTerm ? property.depositTerm : "" }}
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="row">
+                  <div class="col-12 heading-content">
+                    Chính sách tăng giá
+                  </div>
+                  <div class="col-12">
+                    {{ property.paymentTerm ? property.paymentTerm : "" }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </p-fieldset>
+        </div>
+        <div class="mt-2 mb-3" id="detail-body-4">
+          <p-fieldset [toggleable]="true" legend="Tiện ích khu vực">
+            <p></p>
+          </p-fieldset>
+        </div>
+        <div class="mt-2 mb-3" id="detail-body-5" *ngIf="property.project">
+          <p-fieldset [toggleable]="true" legend="Thông tin dự án">
+            <div class="row">
+              <div class="col-12">
+                <div class="row mb-4">
+                  <div class="col-12 heading-content">Tên</div>
+                  <div class="col-12">
+                    {{ property.project ? property.project.name : "" }}
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="row mb-4">
+                  <div class="col-12 heading-content">Chủ đầu tư</div>
+                  <div class="col-12">
+                    {{ property.project ? property.project.company : "" }}
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="row mb-4">
+                  <div class="col-12 heading-content">Địa chỉ</div>
+                  <div class="col-12">
+                    {{ district ? district.name : "" }}, TP.HCM
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="row mb-4">
+                  <div class="col-12 heading-content">Năm bàn giao</div>
+                  <div class="col-12">
+                    {{
+                      (property.project ? property.project.handoverYear : "")
+                        | date: "yyyy"
+                    }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </p-fieldset>
+        </div>
+        <p-scrollTop
+          target="parent"
+          styleClass="custom-scrolltop"
+          [threshold]="200"
+          icon="pi pi-arrow-up"
+        ></p-scrollTop>
+      </div>
+    </div>
+  </div>
+</p-dialog>

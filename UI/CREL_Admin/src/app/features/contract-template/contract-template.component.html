@@ -1,0 +1,23 @@
+<p-toolbar styleClass="mb-2">
+  <ng-template pTemplate="left">
+    <button
+      class="btn btn-primary animation-on-hover mr-2"
+      (click)="downTemplate()"
+      pTooltip="Tải xuống mẫu hợp đồng"
+      [disabled]="isShowSpin"
+    >
+      <i class="pi pi-download"></i> Tải xuống
+    </button>
+  </ng-template>
+
+  <ng-template pTemplate="right"> </ng-template>
+</p-toolbar>
+<div class="card-custom">
+  <dx-html-editor
+    valueType="html"
+    [(value)]="template"
+    [readOnly]="true"
+    class="custom-description"
+  >
+  </dx-html-editor>
+</div>

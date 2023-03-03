@@ -1,0 +1,49 @@
+<p-dialog
+  header="Chi tiết cửa hàng của thương hiệu kinh doanh"
+  [modal]="true"
+  [style]="{ width: '80vw' }"
+  [(visible)]="isShowDialog"
+  (onHide)="hideDialog()"
+  [baseZIndex]="1000"
+  [dismissableMask]="true"
+  [closable]="true"
+  [draggable]="false"
+>
+  <div class="grid" *ngIf="isShowSkeleton">
+    <div class="sm:col-5">
+      <div class="flex justify-content-center">
+        <p-skeleton shape="circle" size="5rem"></p-skeleton>
+      </div>
+    </div>
+    <div class="sm:col-7">
+      <div class="grid">
+        <div class="sm:col-12 md:col-6">
+          <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+        </div>
+        <div class="sm:col-12 md:col-6">
+          <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+        </div>
+        <div class="sm:col-12 md:col-6">
+          <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+        </div>
+        <div class="sm:col-12 md:col-6">
+          <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+        </div>
+        <div class="sm:col-12 md:col-6">
+          <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+        </div>
+        <div class="sm:col-12 md:col-6">
+          <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+        </div>
+        <div class="sm:col-12">
+          <p-skeleton height="4rem" styleClass="mb-2"></p-skeleton>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="grid" *ngIf="!isShowSkeleton">
+      <div class="sm:col-12">
+
+      </div>
+    </div>
+</p-dialog>

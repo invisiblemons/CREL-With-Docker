@@ -1,0 +1,181 @@
+<p-table
+  [resizableColumns]="true"
+  [responsive]="true"
+  [groupRowsByOrder]="0"
+  #datatable
+  [value]="brandRequests"
+  rowGroupMode="subheader"
+  groupRowsBy="brand.id"
+  sortMode="single"
+  responsiveLayout="scroll"
+  [paginator]="true"
+  [rows]="TABLE_CONFIG.ROWS"
+  [rowsPerPageOptions]="TABLE_CONFIG.ROWS_PER_PAGE"
+  [globalFilterFields]="['id','area']"
+  [rowHover]="true"
+  styleClass="p-sticky p-datatable-striped custom-p-table"
+  [columns]="selectedColumns"
+  [autoLayout]="true"
+>
+  <ng-template pTemplate="caption">
+    <div class="grid highlight">
+      <div class="col-9 flex align-items-center">
+        <h3 class="p-m-0 mb-0" style="font-weight: 600">
+          Yêu cầu từ thương hiệu
+        </h3>
+      </div>
+      <div class="col-3">
+        <div class="flex justify-content-end">
+          <p-multiSelect
+            name="columns"
+            [options]="displayCols"
+            [(ngModel)]="selectedColumns"
+            [maxSelectedLabels]="0"
+            optionLabel="header"
+            selectedItemsLabel="{{
+              cols.length === selectedColumns.length
+                ? 'Tất cả'
+                : 'Chọn cột hiển thị'
+            }}"
+            [style]="{ minWidth: '224px' }"
+            [scrollHeight]="220"
+            placeholder="Chọn cột hiển thị"
+          >
+          </p-multiSelect>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="colgroup" let-columns>
+    <colgroup>
+      <col
+        *ngFor="let col of columns"
+        [ngStyle]="{ width: col.width || 'auto' }"
+      />
+    </colgroup>
+  </ng-template>
+  <ng-template pTemplate="groupheader" let-brandRequest>
+    <tr pRowGroupHeader (click)="openBrandDetail(brandRequest)" pTooltip="Nhấn xem chi tiết thương hiệu">
+      <td colspan="5">
+        <img
+          [alt]="brandRequest.brand.name"
+          [src]="
+            brandRequest.brand.avatarLink
+              ? brandRequest.brand.avatarLink
+              : AVATAR_DEFAULT
+          "
+          width="32"
+          referrerpolicy="no-referrer"
+          style="vertical-align: middle"
+        />
+        <span class="font-bold ml-2">{{ brandRequest.brand.name }}</span>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <ng-container *ngFor="let col of columns" [ngSwitch]="col.field">
+        <th
+          *ngSwitchCase="col.field === 'action' ? col.field : ''"
+          [ngStyle]="{ textAlign: col.headerAlign }"
+        >
+          {{ col.header }}
+        </th>
+        <th
+          *ngSwitchDefault
+          [ngStyle]="{ textAlign: col.headerAlign }"
+          pSortableColumn="{{ col.field }}"
+        >
+          {{ col.header }}
+          <p-sortIcon field="{{ col.field }}"></p-sortIcon>
+        </th>
+      </ng-container>
+    </tr>
+  </ng-template>
+  <ng-template
+    pTemplate="body"
+    let-brandRequest
+    let-columns="columns"
+    let-i="rowIndex"
+  >
+    <tr>
+      <ng-container *ngFor="let col of columns" [ngSwitch]="col.field">
+        <td
+          *ngSwitchDefault
+          [attr.title]="brandRequest[col.field]"
+          [ngStyle]="{ textAlign: col.textAlign }"
+        >
+          {{ brandRequest[col.field] }}
+        </td>
+        <td
+          *ngSwitchCase="'money'"
+          [ngStyle]="{
+            textAlign: col.textAlign
+          }"
+        >
+          {{
+            (brandRequest.minPrice / 1000000 | number: "1.0-2") +
+              " - " +
+              (brandRequest.maxPrice / 1000000 | number: "1.0-2") +
+              " triệu/tháng"
+          }}
+        </td>
+        <td
+          *ngSwitchCase="'floorArea'"
+          [ngStyle]="{
+            textAlign: col.textAlign
+          }"
+        >
+          {{
+            brandRequest.minFloorArea+
+              " - " +
+              brandRequest.maxFloorArea +
+              " m²"
+          }}
+        </td>
+        <td *ngSwitchCase="'action'" [ngStyle]="{ textAlign: col.textAlign }">
+          <button
+            class="btn btn-primary btn-round btn-icon animation-on-hover mr-2"
+            (click)="handleRequest(brandRequest)"
+            pTooltip="Xử lý đề xuất"
+          >
+            <i class="pi pi-chevron-circle-right"> </i>
+          </button>
+          <!-- <button
+    class="btn btn-success btn-round btn-icon animation-on-hover mr-2"
+    (click)="openEditContract(brandRequest)"
+    pTooltip="Chỉnh sửa"
+  >
+    <i class="pi pi-pencil"> </i>
+  </button>
+  <button
+    [disabled]="brandRequest.status === 0 ? true : false"
+    class="btn btn-danger btn-round animation-on-hover btn-icon"
+    (click)="deleteContract(brandRequest)"
+    pTooltip="Xoá"
+  >
+    <i class="pi pi-trash"> </i>
+  </button> -->
+        </td>
+      </ng-container>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="4" *ngIf="isShowSpin" class="text-center">
+        <p-progressSpinner
+          [style]="{ width: '50px', height: '50px' }"
+          styleClass="custom-spinner"
+          strokeWidth="8"
+          fill="#EEEEEE"
+          animationDuration=".5s"
+        ></p-progressSpinner>
+      </td>
+      <td colspan="4" *ngIf="!isShowSpin" class="text-center">
+        Không có yêu cầu cần xử lý.
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<router-outlet></router-outlet>
